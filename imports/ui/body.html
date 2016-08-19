@@ -4,18 +4,46 @@
       {{> updatePhotoForm}}
     {{/if}}
     <div class="navigation">
-      <h1>Travana Photo</h1>
-      <form>
-        <input class="tag-search"/>
-      </form>
-      <div class="uploader-button">
-        {{> uploader}}
-      </div>
+      <h1>Stacks</h1>
     </div>
-    <div class="main-panel">
-      {{#each photoStream}}
-          <img class="image-thumb" src={{url}} />
-      {{/each}}
+    <div class="main-container">
+      <div class="side-panel">
+        <h1>Browse by Categories</h1>
+        <ul class="category-tags">
+          <li>Destination</li>
+          <li>Nature</li>
+          <li>Adventure</li>
+          <li>Sunset</li>
+          <li>City</li>
+          <li>Panoramic</li>
+          <li>Tranquility</li>
+          <li>Outdoors</li>
+          <li>Culture</li>
+        </ul>
+      </div>
+      <div class="main-panel">
+        <div class="panel-nav">
+          <form class="main-search">
+            <input class="tag-search" placeholder="Search by tags.."/>
+          </form>
+          <div class="uploader-button">
+            {{> uploader}}
+          </div>
+        </div>
+        <div class="image-container">
+          {{#if photoStream}}
+            {{#each photoStream}}
+                <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_150,h_150/{{public_id}}.{{format}}" />
+            {{/each}}
+          {{else}}
+            {{#if noResults}}
+              <p class="no-results">No results found</p>
+            {{else}}
+              <div class="no-results"><span class="loader"><span class="loader-inner"></span></span></div>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
     </div>
 </body>
 

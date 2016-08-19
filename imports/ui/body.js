@@ -4,25 +4,6 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './body.html';
 
-// Template.body.helpers({
-//   photos() {
-//     var url = $.cloudinary.url('water', {format: 'json', type: 'list'});
-//     console.log(url);
-//     var result = Meteor.http.call("GET", url,
-//           {data: {some: "json", stuff: 1}},
-//           function (error, result) {
-//             if (!error) {
-//               Session.set("twizzled", true);
-//             }
-//           });
-//     console.log(result);
-//     return url;
-//   },
-//   selectedImage: function() {
-//     return Session.get('selectedImagePublicId');
-//   }
-// });
-
 Template.insertPhotoForm.helpers({
   InsertPhotoFormVisible: function() {
     return Session.get('InsertPhotoFormVisible');
@@ -48,23 +29,39 @@ Template.updatePhotoForm.helpers({
 });
 
 Template.body.onCreated(function() {
-  var self = this;
-  self.resources = new ReactiveVar(null);
   Meteor.call("getAllImages", function(error, r) {
     console.log("Rendering data: ");
     console.log(r);
     if (!error) {
-      self.resources.set(r.resources);
+      // Check if returned result is none, if so set showNoResults to be true
+      var returnedArray = r.resources.length;
+      if (returnedArray == 0) {
+        Session.set('showNoResults', true);
+      } else {
+        Session.set('showNoResults', false);
+        Session.set('photoStream', r.resources);
+      }
     } else {
-       console.log(error);
+      Session.set('showNoResults', true);
+      console.log(error);
     }
   });
 });
 
+Template.body.rendered = function() { // Template.thirdTemplate.created - also worked.
+  init = function(obj) {
+    console.log('imgggg');
+    $(obj).fadeIn('slow');
+  //what ever i wished to do
+  }
+}
+
 Template.body.helpers({
   photoStream: function () {
-    var self = Template.instance();
-    return self.resources.get();
+    return Session.get('photoStream');
+  },
+  noResults: function () {
+    return Session.get('showNoResults');
   }
 });
 
@@ -94,10 +91,55 @@ Template.body.events({
   },
   "submit form": function(e) {
     // On submit, make new call to retrieve content based on the entered tag
+    var tag = $( ".tag-search" ).val();
+    Session.set('photoStream', undefined);
+    Session.set('showNoResults', false);
+    Meteor.call("getImagebyTag", tag, function(error, r) {
+      console.log("Rendering images by tag: ");
+      console.log(r);
+      if (!error) {
+        // Check if returned result is none, if so set showNoResults to be true
+        var returnedArray = r.resources.length;
+        if (returnedArray == 0) {
+          Session.set('showNoResults', true);
+        } else {
+          Session.set('showNoResults', false);
+          Session.set('photoStream', r.resources);
+        }
+      } else {
+        Session.set('showNoResults', true);
+        console.log(error);
+      }
+    });
     console.log("input submitted");
     e.preventDefault();
     e.stopPropagation();
-    return false;
+  },
+  "click .category-tags li": function(e) {
+    // On click, performs a tag search of the selected tag
+    var tag = $(e.target).text();
+    Session.set('photoStream', undefined);
+    Session.set('showNoResults', false);
+    Meteor.call("getImagebyTag", tag, function(error, r) {
+      console.log("Rendering images by tag: ");
+      console.log(r);
+      if (!error) {
+        // Check if returned result is none, if so set showNoResults to be true
+        var returnedArray = r.resources.length;
+        if (returnedArray == 0) {
+          Session.set('showNoResults', true);
+        } else {
+          Session.set('showNoResults', false);
+          Session.set('photoStream', r.resources);
+        }
+      } else {
+        Session.set('showNoResults', true);
+        console.log(error);
+      }
+    });
+    console.log(tag);
+    e.preventDefault();
+    e.stopPropagation();
   }
 });
 
