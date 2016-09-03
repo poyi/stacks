@@ -39,6 +39,7 @@
         <div class="image-container">
           {{#if photoStream}}
             {{#each photoStream}}
+                <!-- photoStrem contains deleted images, need a way to check and not render if deleted-->
                 <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_150,h_150/{{public_id}}.{{format}}" data-id="{{public_id}}"/>
             {{/each}}
           {{else}}

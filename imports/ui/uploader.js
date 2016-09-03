@@ -4,6 +4,39 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './uploader.html';
 
+
+Template.uploader.rendered = function() {
+  document.getElementById("upload_widget_opener").addEventListener("click", function() {
+
+    cloudinary.openUploadWidget({ cloud_name: Meteor.settings.public.CLOUDINARY_CLOUD_NAME, upload_preset: 'stacksUpload'},
+      function(error, result) {
+        if(!error) {
+          Session.set('selectedImage', result[0]);
+          $('.imagePanel').css("display","flex").fadeIn();
+          Meteor.call("getAllImages", function(error, r) {
+            console.log("Rendering data: ");
+            console.log(r);
+            if (!error) {
+              // Check if returned result is none, if so set showNoResults to be true
+              var returnedArray = r.resources.length;
+              if (returnedArray == 0) {
+                Session.set('showNoResults', true);
+              } else {
+                Session.set('showNoResults', false);
+                Session.set('photoStream', r.resources);
+              }
+            } else {
+              Session.set('showNoResults', true);
+              console.log(error);
+            }
+          });
+        }
+        console.log(error, result)
+      });
+
+  }, false);
+}
+
 Template.uploader.events({
   "change #userimage": function(e) {
     console.log('Upload triggered');

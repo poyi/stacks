@@ -3,6 +3,7 @@
     <div class="preview-panel">
       <div class="back-link">Back to list</div>
       {{#if image}}
+        <div class="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
         <img class="image-preview" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
       {{/if}}
     </div>

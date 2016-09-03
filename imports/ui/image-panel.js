@@ -23,8 +23,12 @@ Template.imagePanel.helpers({
   },
   filesize: function () {
     var image = Session.get('selectedImage');
-    var number = image.bytes / 1000000;
-    return Math.round(number * 100) / 100;
+    if(image) {
+      var number = image.bytes / 1000000;
+      return Math.round(number * 100) / 100;
+    } else {
+      return 0;
+    }
   }
 });
 
