@@ -1,0 +1,54 @@
+<body>
+    {{> insertPhotoForm}}
+    {{#if selectedImage}}
+      {{> updatePhotoForm}}
+    {{/if}}
+    <div class="navigation">
+      <h1>Stacks</h1>
+    </div>
+    <div class="main-container">
+      <div class="side-panel">
+        <h1>Browse by Categories</h1>
+        <ul class="category-tags">
+          <li>Destination</li>
+          <li>Nature</li>
+          <li>Adventure</li>
+          <li>Sunset</li>
+          <li>City</li>
+          <li>Panoramic</li>
+          <li>Tranquility</li>
+          <li>Outdoors</li>
+          <li>Culture</li>
+        </ul>
+      </div>
+      {{> imagePanel}}
+      <div class="main-panel">
+        <div class="panel-nav">
+          <form class="main-search">
+            <input class="tag-search" placeholder="Search by tags.."/>
+          </form>
+          <div class="content-meta">
+            {{#if photoStream}}
+              Found {{photoStream.length}} photos
+            {{/if}}
+          </div>
+          <div class="uploader-button">
+            {{> uploader}}
+          </div>
+        </div>
+        <div class="image-container">
+          {{#if photoStream}}
+            {{#each photoStream}}
+                <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_150,h_150/{{public_id}}.{{format}}" data-id="{{public_id}}"/>
+            {{/each}}
+          {{else}}
+            {{#if noResults}}
+              <p class="no-results">No results found</p>
+            {{else}}
+              <div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+</body>

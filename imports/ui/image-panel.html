@@ -1,0 +1,57 @@
+<template name="imagePanel">
+  <div class="imagePanel">
+    <div class="preview-panel">
+      <div class="back-link">Back to list</div>
+      {{#if image}}
+        <img class="image-preview" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
+      {{/if}}
+    </div>
+    <div class="info-panel">
+      <div class="image-meta">
+        <div class="image-title">
+          {{image.public_id}}
+        </div>
+        <div class="meta-row">
+          <div class="image-dimension">
+            Dimension: {{image.width}} x {{image.height}}
+          </div>
+          <div class="image-size">
+            File size: {{filesize}} MB
+          </div>
+          <a class="delete-image">Delete Image</a>
+        </div>
+        <button class="download-link" href="{{image.url}}" download="{{image.public_id}}">Download Image</button>
+        <div class="tags-group">
+          <ul class="image-tags">
+            {{#each image.tags}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+          <button class="edit-tag-link">Add / Edit Tags</button>
+        </div>
+        <div class="edit-tags-group">
+          <input name="tags" id="image-tags" />
+          <button class="update-tags-link">APPLY TAGS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="updatePhotoForm">
+  <div class="upload-modal">
+    <div class="image-preview">
+      <img src="{{c.url public_id crop="scale"}}">
+    </div>
+    {{#autoForm collection="Photos" doc=photo id="updatePhotoForm" class="photo-form" type="update"}}
+    <h1>Edit Photo</h1>
+      <fieldset>
+        {{> afQuickField name='title'}}
+        {{> afQuickField name='tags'}}
+      </fieldset>
+      <button type="submit" class="btn btn-primary">UPDATE</button>
+      {{#quickRemoveButton collection="Photos" onSuccess=deletePhoto _id=photo._id class="remove-photo"}}REMOVE PHOTO{{/quickRemoveButton}}
+    {{/autoForm}}
+    <div href="#" class="close"></div>
+  </div>
+</template>

@@ -83,17 +83,6 @@
   color: white;
 }
 
-.image-preview {
-  width: 60%;
-  height: 100%;
-  float: left;
-}
-
-.image-preview img{
-  width: 100%;
-  vertical-align: middle
-}
-
 .photo-form {
   font-family: Open Sans, arial, sans-serif;
   padding: 30px;

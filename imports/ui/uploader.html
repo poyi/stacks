@@ -1,0 +1,33 @@
+<template name="uploader">
+
+        <input type="file" id="userimage" name="userimage">
+    
+</template>
+
+<template name="insertPhotoForm">
+  <div class="PhotoForm">
+    {{#if showLoadingModal}}
+    <div class="loading-modal">
+      <h1>Working on uploading the image</h1>
+      <p>This can take some time depending on your image size</p>
+      <div class="spinner"></div>
+    </div>
+    {{/if}}
+    {{#if InsertPhotoFormVisible}}
+    <div class="upload-modal">
+      <div class="image-preview">
+        <img src="{{c.url public_id crop="fit"}}">
+      </div>
+        {{#autoForm collection="Photos" id="insertPhotoForm" class="photo-form" type="insert"}}
+        <h1>Add Photo</h1>
+          <fieldset>
+            {{> afQuickField name='title'}}
+            {{> afQuickField name='public_id' value=image_id}}
+            {{> afQuickField name='tags'}}
+          </fieldset>
+          <button type="submit" class="btn btn-primary">Insert</button>
+        {{/autoForm}}
+    </div>
+    {{/if}}
+  </div>
+</template>

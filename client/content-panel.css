@@ -7,6 +7,10 @@
 
 .panel-nav {
   height: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .image-container {
@@ -20,10 +24,20 @@
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .main-search {
   float: left;
+}
+
+.content-meta {
+  color: white;
+  padding: 14px;
+  font-size: 18px;
+  margin-left: 30px;
+  flex: 1;
 }
 
 .main-search input{
@@ -47,6 +61,11 @@
 .uploader-button {
   float: right;
   cursor: pointer;
+}
+
+.loading-icon {
+  margin: 14% auto 0;
+  vertical-align: middle;
 }
 
 .loader {

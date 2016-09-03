@@ -8,7 +8,7 @@ cloudinary.config({
 
 Meteor.startup(() => {
   Meteor.methods({
-    getAllImages: function () {
+    getAllImages: function (options) {
       console.log("Should being fetching json");
       this.unblock();
       var results = cloudinary.api.resources(function(result) { console.log(result) }, { max_results: '500'});
@@ -18,6 +18,18 @@ Meteor.startup(() => {
     getImagebyTag: function (tag) {
       console.log("tag is: " + tag);
       var results = cloudinary.api.resources_by_tag(tag, function(result) { console.log(result) }, { max_results: '500'});
+      return results;
+    },
+    getImage: function (id) {
+      var results = cloudinary.api.resource(id, function(result) { console.log(result) });
+      return results;
+    },
+    updateImageTags: function (id, tags) {
+      var results = cloudinary.api.update(id, function(result) { console.log(result) }, { tags: tags });
+      return results;
+    },
+    deleteImage: function (id) {
+      var results = cloudinary.api.delete_resources(id, function(result) { console.log(result) }, { invalidate: true});
       return results;
     }
   });
