@@ -2,11 +2,11 @@ import { Template } from 'meteor/templating';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './index.html';
+import './library.html';
 import './image-panel.html';
 import './uploader.html';
 
-Template.body.onCreated(function() {
+Template.library.onCreated(function() {
   Meteor.call("getAllImages", function(error, r) {
     console.log("Rendering data: ");
     console.log(r);
@@ -26,14 +26,14 @@ Template.body.onCreated(function() {
   });
 });
 
-Template.body.rendered = function() {
+Template.library.rendered = function() {
   // Fade in image once loaded
   init = function(obj) {
     $(obj).fadeIn('slow');
   }
 }
 
-Template.body.helpers({
+Template.library.helpers({
   photoStream: function () {
     return Session.get('photoStream');
   },
@@ -42,7 +42,12 @@ Template.body.helpers({
   }
 });
 
-Template.body.events({
+Template.library.events({
+  'click .logout': function(event){
+        event.preventDefault();
+        Meteor.logout();
+        FlowRouter.go('/login');
+  },
   "submit form": function(e) {
     // On submit, make new call to retrieve content based on the entered tag
     var tag = $( ".tag-search" ).val();

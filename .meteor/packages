@@ -24,9 +24,14 @@ lepozepo:cloudinary@=4.1.3
 aldeed:autoform
 twbs:bootstrap
 cloudspider:autoform-tags-typeahead
-ajduke:bootstrap-tagsinput
 aldeed:delete-button
 http@1.2.9
 goltfisch:cloudinary-server
 shell-server
 mrt:jquerytagsinputjs
+kadira:flow-router
+kadira:blaze-layout
+npm-bcrypt
+accounts-password
+msavin:mongol
+arillo:flow-router-helpers
