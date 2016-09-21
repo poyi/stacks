@@ -2,12 +2,16 @@
   <div class="imagePanel">
     <div class="panel-navigation">
       <ul class="tab-menu">
-        <li><div class="back-link">Back to list</div></li>
+        <li><div class="button passive back-link" style="margin-top: -20px;">Back to list</div></li>
         <li class="menu-actions">
           <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}">Download Image</a>
         </li>
         <li class="menu-actions">
-          <button class="button passive">Share Image</button>
+          <button class="button passive share-image-link">Share Image</button>
+          <div id="share-image-modal">
+            <div style="margin-bottom: 10px;">Copy & share the link below:</div>
+            <input type="text" value="{{image.url}}" disabled>
+          </div>
         </li>
         <li class="menu-actions">
           <button class="button passive">Add to Album</button>
@@ -21,8 +25,8 @@
     </div>
     <div class="preview-panel">
       {{#if image}}
-        <div class="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
-        <img class="image-preview" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
+        <div id="preview-loader" class="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
+        <img class="image-preview" onload="loadDetailImage(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
       {{/if}}
     </div>
     <div class="info-panel">
@@ -45,12 +49,12 @@
             {{/each}}
           </ul>
           {{#if isInRole 'admin, contributor'}}
-            <button class="edit-tag-link">Add / Edit Tags</button>
+            <button class="button passive edit-tag-link">Add / Edit Tags</button>
           {{/if}}
         </div>
         <div class="edit-tags-group">
           <input name="tags" id="image-tags" />
-          <button class="update-tags-link">APPLY TAGS</button>
+          <button class="button primary update-tags-link">APPLY TAGS</button>
         </div>
       </div>
     </div>

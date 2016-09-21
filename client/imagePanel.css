@@ -1,9 +1,9 @@
 .imagePanel {
-  position: absolute;
   width: 100%;
   height: calc(100vh - 130px);
   display: none;
-  top: 130px;
+  position: relative;
+  margin-top: 130px;
 }
 
 .imagePanel .back-link {
@@ -15,6 +15,8 @@
   padding: 30px;
   width: 60%;
   float: left;
+  height: 100%;
+  position: relative;
 }
 
 .image-preview {
@@ -57,18 +59,9 @@
   list-style: none;
   float: left;
   margin: 0 10px 10px 0;
-  padding: 10px;
-  background: #414042;
-}
-
-.info-panel .edit-tag-link {
-  padding: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 12px;
   font-size: 14px;
-  background: none;
-  font-weight: 400;
-  border: 1px solid #414042;
+  background: #263945;
 }
 
 .edit-tags-group {
@@ -79,6 +72,7 @@
   width: 100% !important;
   height: auto !important;
   border: none;
+  margin-bottom: 20px;
 }
 
 #image-tags_tagsinput .tag {
@@ -92,20 +86,25 @@
   padding: 9px;
 }
 
-.update-tags-link {
-  margin-top: 10px;
-  padding: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 14px;
-  background: #FCBB1F;
-  font-weight: 400;
-  border: none;
-}
-
 .preview-loader {
   position: absolute;
-  left: 50px;
-  top: 100px;
-  z-index: -10;
+  z-index: -9;
+  top: 30%;
+  left: 50%;
+}
+
+#share-image-modal {
+  position: absolute;
+  margin-top: 10px;
+  font-size: 12px;
+  display: none;
+  padding: 10px;
+  background: #263945;
+  color: white;
+}
+
+#share-image-modal input {
+  padding: 10px;
+  color: #242424;
+  min-width: 200px;
 }

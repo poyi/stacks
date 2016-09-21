@@ -5,5 +5,6 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "clipboard": "^1.5.12"
   }
 }

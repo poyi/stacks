@@ -1,6 +1,16 @@
 <template name="home">
   <div class="home-page">
-    <h1>Stacks</h1>
-    <a href="{{pathFor route='login'}}">Login</a>
+    <div class="login-module">
+      <h2>Stacks Sign in</h2>
+      <form class="login">
+        <div class="input-row">
+          <p>Email</p><input type="email" name="email">
+        </div>
+        <div class="input-row">
+          <p>Password</p><input type="password" name="password">
+        </div>
+        <input class="button primary" type="submit" value="Login">
+      </form>
+    </div>
   </div>
 </template>

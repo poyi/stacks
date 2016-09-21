@@ -53,6 +53,11 @@
   display: none;
 }
 
+.image-thumb:hover {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: -4px;
+}
+
 .panel-meta {
   color: white;
   font-size: 14px;

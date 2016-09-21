@@ -1,5 +1,4 @@
 import { Template } from 'meteor/templating';
-
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './library.html';
@@ -45,8 +44,9 @@ Template.library.helpers({
 Template.library.events({
   'click .logout': function(event){
         event.preventDefault();
-        Meteor.logout();
-        FlowRouter.go('/login');
+        Meteor.logout(function (success, error) {
+            FlowRouter.go('/');
+        });
   },
   "submit form": function(e) {
     // On submit, make new call to retrieve content based on the entered tag

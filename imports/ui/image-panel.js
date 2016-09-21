@@ -1,5 +1,4 @@
 import { Template } from 'meteor/templating';
-
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './image-panel.html';
@@ -8,6 +7,11 @@ Template.imagePanel.rendered = function() {
   $('#image-tags').tagsInput({
     'defaultText':'Type here to add a tag'
   });
+  // Fade in image once loaded
+  loadDetailImage = function(obj) {
+    $('#preview-loader').hide();
+    $(obj).fadeIn('slow');
+  }
 }
 
 Template.imagePanel.helpers({
@@ -42,6 +46,14 @@ Template.imagePanel.events({
     e.preventDefault();
     $('.tags-group').hide();
     $('.edit-tags-group').fadeIn();
+  },
+  'click': function (e){
+    e.preventDefault();
+    $('#share-image-modal').fadeOut();
+  },
+  'click .share-image-link, #share-image-modal': function (e){
+    e.preventDefault();
+    $('#share-image-modal').fadeIn();
   },
   'click .delete-image': function (e){
     e.preventDefault();
