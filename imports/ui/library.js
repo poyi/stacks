@@ -4,6 +4,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './library.html';
 import './image-panel.html';
 import './uploader.html';
+import './settings.html';
 
 Template.library.onCreated(function() {
   Meteor.call("getAllImages", function(error, r) {
@@ -26,6 +27,7 @@ Template.library.onCreated(function() {
 });
 
 Template.library.rendered = function() {
+  $('#settings-panel').hide();
   // Fade in image once loaded
   init = function(obj) {
     $(obj).fadeIn('slow');
@@ -47,6 +49,11 @@ Template.library.events({
         Meteor.logout(function (success, error) {
             FlowRouter.go('/');
         });
+  },
+  'click .settings': function(event){
+        event.preventDefault();
+        $('.main-panel, #library-panel-nav').hide();
+        $('#settings-panel').fadeIn();
   },
   "submit form": function(e) {
     // On submit, make new call to retrieve content based on the entered tag

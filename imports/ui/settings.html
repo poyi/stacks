@@ -1,0 +1,23 @@
+<template name="settings">
+  <div id="settings-panel">
+    <div class="settings-nav-panel">
+      <ul class="settings-nav">
+        <li>My Preferences</li>
+        <li>Reset Password</li>
+        <li><a href="#" class="logout button passive">Sign Out</a></li>
+      </ul>
+    </div>
+    <div class="settings-content">
+      <h2>Stacks Sign in</h2>
+      <form action="/reset-password" id="resetPasswordForm" method="post" class="login">
+        <div class="input-row">
+          <p>Password</p><input id="resetPasswordPassword" name="password" placeholder="New Password" type="password" >
+        </div>
+        <div class="input-row">
+          <p>Confirm Password</p><input id="resetPasswordPasswordConfirm" name="password-confirm" placeholder="Confirm" type="password" >
+        </div>
+        <input class="btn-submit button primary" type="submit" value="Reset">
+      </form>
+    </div>
+  </div>
+</template>

@@ -7,6 +7,9 @@ cloudinary.config({
 });
 
 Meteor.startup(() => {
+  Accounts.urls.resetPassword = function(token) {
+    return Meteor.absoluteUrl('reset-password/' + token);
+  };
   Meteor.methods({
     getAllImages: function (options) {
       console.log("Should being fetching json");
