@@ -1,16 +1,40 @@
 .main-panel {
-  height: calc(100vh - 90px);
-  overflow:auto;
   padding: 30px;
-  width: 80%;
+  margin-top: 130px;
 }
 
-.panel-nav {
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-content: flex-start;
+.panel-navigation {
+  border-bottom: 2px solid rgba(30, 48, 78, 1);
+  position: fixed;
+  top: 60px;
+  background: #23212C;
+  width: 100%;
+  z-index: 999;
+}
+
+.tab-menu {
+  padding: 30px 30px 40px;
+}
+
+.tab-menu li {
+  float: left;
+  font-size: 16px;
+  color: white;
+  margin-right: 30px;
+}
+
+.menu-actions {
+  float: right !important;
+  margin-top: -20px !important;
+  margin-right: 10px !important;
+}
+
+.panel-actions {
+  float: right;
+}
+
+.panel-actions div {
+  float: right;
 }
 
 .image-container {
@@ -18,49 +42,35 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
+  justify-content: center;
 }
 
 .image-thumb {
   float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
+  display: none;
 }
 
-.main-search {
-  float: left;
-}
-
-.content-meta {
+.panel-meta {
   color: white;
-  padding: 14px;
-  font-size: 18px;
-  margin-left: 30px;
-  flex: 1;
+  font-size: 14px;
+  margin-top: 14px;
 }
 
-.main-search input{
-  padding: 20px;
-  height: 48px;
+.tag-search {
+  height: 40px;
   width: 200px;
-  font-size: 18px;
+  font-size: 16px;
   border: none;
+  border-bottom: 2px solid white;
+  padding-bottom: 26px;
+  background: none;
 }
 
-.upload-area .alert {
-  position: relative;
-}
-
-.upload-area input[type="file"] {
-  float: right;
-  width: 100px;
-  opacity: 0;
-}
-
-.uploader-button {
-  float: right;
-  cursor: pointer;
+.tag-search:focus {
+  outline: none;
 }
 
 .loading-icon {

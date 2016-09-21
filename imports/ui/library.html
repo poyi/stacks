@@ -1,22 +1,42 @@
 <template name="library">
-    {{> insertPhotoForm}}
-    {{#if selectedImage}}
-      {{> updatePhotoForm}}
-    {{/if}}
     <div class="navigation">
-      <h1>Stacks</h1>
-      <ul>
-          <li><a href="{{pathFor route='/'}}">Home</a></li>
-          {{#if currentUser}}
-              <li><a href="#" class="logout">Logout</a></li>
-          {{else}}
-              <li><a href="{{pathFor route='register'}}">Register</a></li>
-              <li><a href="{{pathFor route='login'}}">Login</a></li>
+      <h1><a href="{{pathFor route='/'}}">Stacks</a></h1>
+      <ul class="nav-links">
+        {{#if currentUser}}
+            <li><a href="#" class="logout">Logout</a></li>
+        {{else}}
+            <li><a href="{{pathFor route='login'}}">Login</a></li>
+        {{/if}}
+      </ul>
+    </div>
+    <div id="library-panel-nav" class="panel-navigation">
+      <ul class="tab-menu">
+        <li>
+          <form>
+            <input class="tag-search" placeholder="Search by tags.."/>
+          </form>
+        </li>
+        <li>Browse by tag</li>
+        <li>My Albums</li>
+        <li>Moderate Images</li>
+        <li class="menu-actions">
+          {{#if isInRole 'admin, contributor'}}
+            <div class="button passive">
+              {{> uploader}}
+            </div>
           {{/if}}
+        </li>
+        <li class="menu-actions">
+          {{#if photoStream}}
+            <div class="panel-meta">
+              Found {{photoStream.length}} photos
+            </div>
+          {{/if}}
+        </li>
       </ul>
     </div>
     <div class="main-container">
-      <div class="side-panel">
+      <!-- <div class="side-panel">
         <h1>Browse by Categories</h1>
         <ul class="category-tags">
           <li>Destination</li>
@@ -29,27 +49,13 @@
           <li>Outdoors</li>
           <li>Culture</li>
         </ul>
-      </div>
+      </div> -->
       {{> imagePanel}}
       <div class="main-panel">
-        <div class="panel-nav">
-          <form class="main-search">
-            <input class="tag-search" placeholder="Search by tags.."/>
-          </form>
-          <div class="content-meta">
-            {{#if photoStream}}
-              Found {{photoStream.length}} photos
-            {{/if}}
-          </div>
-          <div class="uploader-button">
-            {{> uploader}}
-          </div>
-        </div>
         <div class="image-container">
           {{#if photoStream}}
             {{#each photoStream}}
-                <!-- photoStrem contains deleted images, need a way to check and not render if deleted-->
-                <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_150,h_150/{{public_id}}.{{format}}" data-id="{{public_id}}"/>
+                <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{public_id}}.{{format}}" data-id="{{public_id}}" onerror="this.style.display='none'"/>
             {{/each}}
           {{else}}
             {{#if noResults}}

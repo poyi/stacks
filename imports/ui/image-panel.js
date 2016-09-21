@@ -35,7 +35,8 @@ Template.imagePanel.helpers({
 Template.imagePanel.events({
   'click .back-link': function (e){
     e.preventDefault();
-    $('.imagePanel').fadeOut();
+    $('.imagePanel').hide();
+    $('.main-panel, #library-panel-nav').fadeIn();
   },
   'click .edit-tag-link': function (e){
     e.preventDefault();

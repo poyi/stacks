@@ -51,7 +51,7 @@ table {
 
 body {
   font-family: 'Open Sans', arial, sans-serif;
-  background: #242424;
+  background: #23212C;
 }
 
 h1 {
@@ -65,4 +65,59 @@ h1 {
   display: -webkit-flex; /* Safari */
   display: flex;
   flex-direction: row;
+}
+
+.button {
+	display: inline-block;
+	cursor: pointer;
+	height: 38px;
+	padding: 12px 14px;
+	font-size: 14px;
+}
+
+.passive {
+	background: none;
+	color: white;
+	border: 1px solid #8A8A8A;
+}
+
+.passive a {
+	font-size: 14px;
+	color: white;
+}
+
+.delete {
+	background: none;
+	color: #FF8673;
+	border: 1px solid #FF8673;
+}
+
+.primary {
+	background: #1882C9;
+	color: white;
+	border: 1px solid #1882C9;
+}
+
+.navigation {
+  font-family: Open Sans, Arial, sans-serif;
+  font-weight: 400;
+	padding: 30px;
+  height: 60px;
+  width: 100%;
+	position: fixed;
+	background: #23212C;
+	z-index: 999;
+}
+
+.navigation a {
+	color: white;
+}
+
+.navigation h1 {
+  float: left;
+}
+
+.nav-links {
+	float: right;
+
 }

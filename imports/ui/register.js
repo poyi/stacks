@@ -14,11 +14,12 @@ Template.register.events({
             email: email,
             password: password
         }, function(err) {
-          if (err)
+          if (err) {
             console.log(err);
-          else
-            console.log('success!');
+          } else {
+            console.log("Signed up!");
+            FlowRouter.go('/library');
+          }
         });
-        FlowRouter.go('/library');
     },
 });

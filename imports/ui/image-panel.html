@@ -1,7 +1,25 @@
 <template name="imagePanel">
   <div class="imagePanel">
+    <div class="panel-navigation">
+      <ul class="tab-menu">
+        <li><div class="back-link">Back to list</div></li>
+        <li class="menu-actions">
+          <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}">Download Image</a>
+        </li>
+        <li class="menu-actions">
+          <button class="button passive">Share Image</button>
+        </li>
+        <li class="menu-actions">
+          <button class="button passive">Add to Album</button>
+        </li>
+        {{#if isInRole 'admin'}}
+          <li class="menu-actions">
+            <a class="button delete delete-image">Delete Image</a>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
     <div class="preview-panel">
-      <div class="back-link">Back to list</div>
       {{#if image}}
         <div class="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
         <img class="image-preview" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
@@ -19,16 +37,16 @@
           <div class="image-size">
             File size: {{filesize}} MB
           </div>
-          <a class="delete-image">Delete Image</a>
         </div>
-        <button class="download-link" href="{{image.url}}" download="{{image.public_id}}">Download Image</button>
         <div class="tags-group">
           <ul class="image-tags">
             {{#each image.tags}}
               <li>{{this}}</li>
             {{/each}}
           </ul>
-          <button class="edit-tag-link">Add / Edit Tags</button>
+          {{#if isInRole 'admin, contributor'}}
+            <button class="edit-tag-link">Add / Edit Tags</button>
+          {{/if}}
         </div>
         <div class="edit-tags-group">
           <input name="tags" id="image-tags" />

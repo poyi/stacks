@@ -84,7 +84,8 @@ Template.library.events({
       if (!error) {
         // Check if returned result is none, if so set showNoResults to be true
         Session.set('selectedImage', r);
-        $('.imagePanel').css("display","flex").fadeIn();
+        $('.main-panel, #library-panel-nav').hide();
+        $('.imagePanel').fadeIn();
         // Set the tag input for image edit
         var tags = r.tags.toString();
         $('#image-tags').importTags(tags);
