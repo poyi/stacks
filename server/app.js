@@ -22,7 +22,7 @@ Meteor.startup(() => {
     getAllImages: function (options) {
       console.log("Should being fetching json");
       this.unblock();
-      var results = cloudinary.api.resources(function(result) { console.log(result) }, { max_results: '500'});
+      var results = cloudinary.api.resources(function(result) { console.log(result) }, { max_results: '500', moderations: true});
       console.log("Fetched completed!");
       return results;
     },
@@ -31,8 +31,16 @@ Meteor.startup(() => {
       var results = cloudinary.api.resources_by_tag(tag, function(result) { console.log(result) }, { max_results: '500'});
       return results;
     },
+    updateStatus: function (id, status) {
+      var results = cloudinary.api.update(id, function(result) { console.log(result) }, { moderation_status: status });
+      return results;
+    },
     getImage: function (id) {
       var results = cloudinary.api.resource(id, function(result) { console.log(result) });
+      return results;
+    },
+    getModerateQueue: function (id) {
+      var results = cloudinary.api.resources_by_moderation('manual', 'pending', function(result) { console.log(result) });
       return results;
     },
     updateImageTags: function (id, tags) {

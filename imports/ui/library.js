@@ -65,6 +65,27 @@ Template.library.events({
         $('.tab-menu li').removeClass( "active-nav" );
         $('#browse-tags').addClass( "active-nav" );
   },
+  'click .reset-results': function(event){
+        event.preventDefault();
+        $('.imagePanel').hide();
+        $('.tag-panel').hide();
+        $('.tab-menu li').removeClass( "active-nav" );
+        Meteor.call("getAllImages", function(error, r) {
+          if (!error) {
+            // Check if returned result is none, if so set showNoResults to be true
+            var returnedArray = r.resources.length;
+            if (returnedArray == 0) {
+              Session.set('showNoResults', true);
+            } else {
+              Session.set('showNoResults', false);
+              Session.set('photoStream', r.resources);
+            }
+          } else {
+            Session.set('showNoResults', true);
+            console.log(error);
+          }
+        });
+  },
   'click .settings': function(event){
         event.preventDefault();
         $('.settings').hide();
@@ -87,7 +108,33 @@ Template.library.events({
         $('.main-panel, #library-panel-nav').fadeIn();
         $('.notification-banner').hide();
   },
+  'click #moderate-image': function(event){
+        event.preventDefault();
+        $('.tag-panel').hide();
+        $('.main-panel, #library-panel-nav').fadeIn();
+        $('.tab-menu li').removeClass( "active-nav" );
+        $('#moderate-image').addClass( "active-nav" );
+        Session.set('photoStream', '');
+        Meteor.call("getModerateQueue", function(error, r) {
+          if (!error) {
+            // Check if returned result is none, if so set showNoResults to be true
+            var returnedArray = r.resources.length;
+            if (returnedArray == 0) {
+              console.log('moderate empty');
+              Session.set('showNoResults', true);
+            } else {
+              Session.set('showNoResults', false);
+              Session.set('photoStream', r.resources);
+            }
+          } else {
+            Session.set('showNoResults', true);
+            console.log(error);
+          }
+        });
+  },
   "submit #search-tags": function(e) {
+    $('.tag-panel').hide();
+    $('.main-panel, #library-panel-nav').fadeIn();
     // On submit, make new call to retrieve content based on the entered tag
     var tag = $( ".tag-search" ).val();
     Session.set('selectedTag', tag);

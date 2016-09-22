@@ -3,23 +3,32 @@
     <div class="panel-navigation">
       <ul class="tab-menu">
         <li style="margin-top: -20px;"><div class="button passive back-link"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to list</div></li>
-        <li class="menu-actions">
-          <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}"><i class="fa fa-download" aria-hidden="true"></i>Download Image</a>
-        </li>
-        <li class="menu-actions">
-          <button class="button passive share-image-link"><i class="fa fa-link" aria-hidden="true"></i>Share Image</button>
-          <div id="share-image-modal">
-            <div style="margin-bottom: 10px;">Copy & share the link below:</div>
-            <input type="text" value="{{image.url}}" disabled>
-          </div>
-        </li>
-        <li class="menu-actions">
-          <button class="button passive"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
-        </li>
-        {{#if isInRole 'admin'}}
+        {{#if moderateQueue}}
           <li class="menu-actions">
-            <a class="button delete delete-image"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Image</a>
+            <button class="button primary moderate-approve"><i class="fa fa-download" aria-hidden="true"></i>Approve Image</button>
           </li>
+          <li class="menu-actions">
+            <button class="button delete moderate-reject"><i class="fa fa-download" aria-hidden="true"></i>Reject Image</button>
+          </li>
+        {{else}}
+          <li class="menu-actions">
+            <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}"><i class="fa fa-download" aria-hidden="true"></i>Download Image</a>
+          </li>
+          <li class="menu-actions">
+            <button class="button passive share-image-link"><i class="fa fa-link" aria-hidden="true"></i>Share Image</button>
+            <div id="share-image-modal">
+              <div style="margin-bottom: 10px;">Copy & share the link below:</div>
+              <input type="text" value="{{image.url}}" disabled>
+            </div>
+          </li>
+          <li class="menu-actions">
+            <button class="button passive"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
+          </li>
+          {{#if isInRole 'admin'}}
+            <li class="menu-actions">
+              <a class="button delete delete-image"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Image</a>
+            </li>
+          {{/if}}
         {{/if}}
       </ul>
     </div>

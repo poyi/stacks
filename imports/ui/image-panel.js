@@ -24,6 +24,17 @@ Template.imagePanel.helpers({
     $('#image-tags').importTags(tags);
     return tags;
   },
+  moderateQueue: function () {
+    var image = Session.get('selectedImage');
+    if (image) {
+      var status = image.moderation[0].status;
+      if(status == "pending") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   filesize: function () {
     var image = Session.get('selectedImage');
     if(image) {
@@ -53,6 +64,30 @@ Template.imagePanel.events({
   'click .share-image-link, #share-image-modal': function (e){
     e.preventDefault();
     $('#share-image-modal').fadeIn();
+  },
+  'click .moderate-approve': function (e){
+    e.preventDefault();
+    var status = "approved";
+    var id = Session.get('selectedImage').public_id;
+    Meteor.call("updateStatus", id, status, function(error, r) {
+      if (!error) {
+        Session.set('selectedImage', r);
+      } else {
+        console.log(error);
+      }
+    });
+  },
+  'click .moderate-reject': function (e){
+    e.preventDefault();
+    var status = "reject";
+    var id = Session.get('selectedImage').public_id;
+    Meteor.call("updateStatus", id, status, function(error, r) {
+      if (!error) {
+        Session.set('selectedImage', r);
+      } else {
+        console.log(error);
+      }
+    });
   },
   'click .delete-image': function (e){
     e.preventDefault();
