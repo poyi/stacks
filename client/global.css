@@ -54,6 +54,10 @@ body {
   background: #23212C;
 }
 
+.logo {
+	font-size: 26px;
+}
+
 h1 {
   font-family: 'Varela Round', sans-serif;
   font-size: 20px;
@@ -73,6 +77,10 @@ h1 {
 	height: 38px;
 	padding: 12px 14px;
 	font-size: 14px;
+}
+
+.button i {
+	margin-right: 8px;
 }
 
 .passive {

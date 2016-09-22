@@ -1,10 +1,11 @@
 <template name="library">
     <div class="navigation">
-      <h1><a href="{{pathFor route='/'}}">Stacks</a></h1>
+      <h1><a class="logo" href="{{pathFor route='/'}}">Stacks</a></h1>
       <ul class="nav-links">
         {{#if currentUser}}
             <li><a href="#" class="settings">Hi {{accountName}}!</a></li>
-            <li><a href="#" class="close-settings">X</a></li>
+            <li><a href="#" class="close-settings"><i class="fa fa-times" aria-hidden="true"></i>
+</a></li>
         {{else}}
             <li><a href="{{pathFor route='login'}}">Login</a></li>
         {{/if}}
@@ -15,16 +16,16 @@
       <ul class="tab-menu">
         <li>
           <form id="search-tags">
-            <input class="tag-search" placeholder="Search by tags.."/>
+            <i class="fa fa-search" aria-hidden="true"></i><input class="tag-search" placeholder="Search by tags.."/>
           </form>
         </li>
-        <li>Browse by tag</li>
+        <li id="browse-tags">Browse Tags</li>
         <li>My Albums</li>
         <li>Moderate Images</li>
         <li class="menu-actions">
           {{#if isInRole 'admin, contributor'}}
             <div class="button passive">
-              {{> uploader}}
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>{{> uploader}}
             </div>
           {{/if}}
         </li>
@@ -38,20 +39,7 @@
       </ul>
     </div>
     <div class="main-container">
-      <!-- <div class="side-panel">
-        <h1>Browse by Categories</h1>
-        <ul class="category-tags">
-          <li>Destination</li>
-          <li>Nature</li>
-          <li>Adventure</li>
-          <li>Sunset</li>
-          <li>City</li>
-          <li>Panoramic</li>
-          <li>Tranquility</li>
-          <li>Outdoors</li>
-          <li>Culture</li>
-        </ul>
-      </div> -->
+      {{> tagPanel}}
       {{> imagePanel}}
       <div class="main-panel">
         <div class="image-container">

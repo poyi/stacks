@@ -57,12 +57,22 @@ Template.library.events({
             FlowRouter.go('/');
         });
   },
+  'click #browse-tags': function(event){
+        event.preventDefault();
+        $('.main-panel').hide();
+        $('.imagePanel').hide();
+        $('.tag-panel').fadeIn();
+        $('.tab-menu li').removeClass( "active-nav" );
+        $('#browse-tags').addClass( "active-nav" );
+  },
   'click .settings': function(event){
         event.preventDefault();
         $('.settings').hide();
         $('.close-settings').fadeIn();
         $('.main-panel, #library-panel-nav').hide();
         $('.imagePanel').hide();
+        $('.tag-panel').hide();
+        $('.tab-menu li').removeClass( "active-nav" );
         $('#settings-panel').fadeIn();
         $('.notification-banner').hide();
   },
@@ -72,6 +82,8 @@ Template.library.events({
         $('#settings-panel').hide();
         $('.settings').fadeIn();
         $('.imagePanel').hide();
+        $('.tag-panel').hide();
+        $('.tab-menu li').removeClass( "active-nav" );
         $('.main-panel, #library-panel-nav').fadeIn();
         $('.notification-banner').hide();
   },
@@ -81,24 +93,39 @@ Template.library.events({
     Session.set('selectedTag', tag);
     Session.set('photoStream', undefined);
     Session.set('showNoResults', false);
-    Meteor.call("getImagebyTag", tag, function(error, r) {
-      console.log("Rendering images by tag: ");
-      console.log(r);
-      if (!error) {
-        // Check if returned result is none, if so set showNoResults to be true
-        var returnedArray = r.resources.length;
-        if (returnedArray == 0) {
-          Session.set('showNoResults', true);
+    if (tag !== '') {
+      Meteor.call("getImagebyTag", tag, function(error, r) {
+        if (!error) {
+          // Check if returned result is none, if so set showNoResults to be true
+          var returnedArray = r.resources.length;
+          if (returnedArray == 0) {
+            Session.set('showNoResults', true);
+          } else {
+            Session.set('showNoResults', false);
+            Session.set('photoStream', r.resources);
+          }
         } else {
-          Session.set('showNoResults', false);
-          Session.set('photoStream', r.resources);
+          Session.set('showNoResults', true);
+          console.log(error);
         }
-      } else {
-        Session.set('showNoResults', true);
-        console.log(error);
-      }
-    });
-    console.log("input submitted");
+      });
+    } else {
+      Meteor.call("getAllImages", function(error, r) {
+        if (!error) {
+          // Check if returned result is none, if so set showNoResults to be true
+          var returnedArray = r.resources.length;
+          if (returnedArray == 0) {
+            Session.set('showNoResults', true);
+          } else {
+            Session.set('showNoResults', false);
+            Session.set('photoStream', r.resources);
+          }
+        } else {
+          Session.set('showNoResults', true);
+          console.log(error);
+        }
+      });
+    }
     e.preventDefault();
     e.stopPropagation();
   },
@@ -106,8 +133,6 @@ Template.library.events({
     Session.set('selectedImage', false);
     var selectedImage = $(e.target).attr("data-id");
     Meteor.call("getImage", selectedImage, function(error, r) {
-      console.log("Retrived image by id: ");
-      console.log(r);
       if (!error) {
         // Check if returned result is none, if so set showNoResults to be true
         Session.set('selectedImage', r);
@@ -120,34 +145,5 @@ Template.library.events({
         console.log(error);
       }
     });
-  },
-  "click .category-tags li": function(e) {
-    // On click, performs a tag search of the selected tag
-    var tag = $(e.target).text();
-    Session.set('photoStream', undefined);
-    Session.set('showNoResults', false);
-    Session.set('selectedTag', tag);
-    Meteor.call("getImagebyTag", tag, function(error, r) {
-      console.log("Rendering images by tag: ");
-      console.log(r);
-      if (!error) {
-        // Check if returned result is none, if so set showNoResults to be true
-        var returnedArray = r.resources.length;
-        if (returnedArray == 0) {
-          Session.set('showNoResults', true);
-        } else {
-          Session.set('showNoResults', false);
-          Session.set('photoStream', r.resources);
-        }
-      } else {
-        Session.set('showNoResults', true);
-        console.log(error);
-      }
-    });
-    console.log(tag);
-    // Remove search value if clicked on filter
-    $('input.tag-search').val('');
-    e.preventDefault();
-    e.stopPropagation();
   }
 });

@@ -2,23 +2,23 @@
   <div class="imagePanel">
     <div class="panel-navigation">
       <ul class="tab-menu">
-        <li><div class="button passive back-link" style="margin-top: -20px;">Back to list</div></li>
+        <li style="margin-top: -20px;"><div class="button passive back-link"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to list</div></li>
         <li class="menu-actions">
-          <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}">Download Image</a>
+          <a class="button primary download-link" href="{{image.url}}" download="{{image.public_id}}"><i class="fa fa-download" aria-hidden="true"></i>Download Image</a>
         </li>
         <li class="menu-actions">
-          <button class="button passive share-image-link">Share Image</button>
+          <button class="button passive share-image-link"><i class="fa fa-link" aria-hidden="true"></i>Share Image</button>
           <div id="share-image-modal">
             <div style="margin-bottom: 10px;">Copy & share the link below:</div>
             <input type="text" value="{{image.url}}" disabled>
           </div>
         </li>
         <li class="menu-actions">
-          <button class="button passive">Add to Album</button>
+          <button class="button passive"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
         </li>
         {{#if isInRole 'admin'}}
           <li class="menu-actions">
-            <a class="button delete delete-image">Delete Image</a>
+            <a class="button delete delete-image"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Image</a>
           </li>
         {{/if}}
       </ul>
@@ -49,12 +49,12 @@
             {{/each}}
           </ul>
           {{#if isInRole 'admin, contributor'}}
-            <button class="button passive edit-tag-link">Add / Edit Tags</button>
+            <button class="button passive edit-tag-link"><i class="fa fa-tags" aria-hidden="true"></i>Add / Edit Tags</button>
           {{/if}}
         </div>
         <div class="edit-tags-group">
           <input name="tags" id="image-tags" />
-          <button class="button primary update-tags-link">Apply Tags</button>
+          <button class="button primary update-tags-link"><i class="fa fa-floppy-o" aria-hidden="true"></i>Apply Tags</button>
         </div>
       </div>
     </div>

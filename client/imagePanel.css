@@ -59,9 +59,10 @@
   list-style: none;
   float: left;
   margin: 0 10px 10px 0;
-  padding: 12px;
+  padding: 14px 10px 10px;
   font-size: 14px;
   background: #263945;
+  cursor: pointer;
 }
 
 .edit-tags-group {

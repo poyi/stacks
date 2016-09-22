@@ -4,7 +4,7 @@
 }
 
 .panel-navigation {
-  border-bottom: 2px solid rgba(30, 48, 78, 1);
+  border-bottom: 2px solid #121B2B;
   position: fixed;
   top: 60px;
   background: #23212C;
@@ -21,6 +21,7 @@
   font-size: 16px;
   color: white;
   margin-right: 30px;
+  cursor: pointer;
 }
 
 .menu-actions {
@@ -60,22 +61,32 @@
 
 .panel-meta {
   color: white;
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 14px;
+  margin-right: 20px;
 }
 
 .tag-search {
-  height: 40px;
-  width: 200px;
-  font-size: 16px;
+  height: 42px;
+  width: 240px;
+  font-size: 18px;
   border: none;
   border-bottom: 2px solid white;
-  padding-bottom: 26px;
+  padding: 0 0 25px 30px;
   background: none;
+}
+
+#search-tags i {
+  position: absolute;
 }
 
 .tag-search:focus {
   outline: none;
+}
+
+.active-nav {
+  border-bottom: 2px solid #263945;
+  padding: 0 0 25px 0;
 }
 
 .loading-icon {

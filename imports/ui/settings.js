@@ -44,6 +44,9 @@ Template.settings.events({
   'click .back-link': function (e){
     e.preventDefault();
     $('#settings-panel').hide();
+    $('.close-settings').hide();
+    $('.settings').fadeIn();
+    $('.tag-panel').hide();
     $('.main-panel, #library-panel-nav').fadeIn();
     $('.notification-banner').hide();
   },

@@ -22,7 +22,6 @@ Template.imagePanel.helpers({
     var image = Session.get('selectedImage');
     var tags = image.tags.toString();
     $('#image-tags').importTags(tags);
-    console.log(tags);
     return tags;
   },
   filesize: function () {
@@ -61,16 +60,12 @@ Template.imagePanel.events({
       var id = Session.get('selectedImage').public_id;
       $('.imagePanel').fadeOut();
       Meteor.call("deleteImage", id, function(error, r) {
-        console.log("Image Deleted: ");
-        console.log(r);
         if (!error) {
           Session.set('selectedImage', undefined);
           // If a tag filter was applied, fetch the latest
           var tag = Session.get('selectedTag');
           if (tag) {
             Meteor.call("getImagebyTag", tag, function(error, r) {
-              console.log("Rendering images by tag: ");
-              console.log(r);
               if (!error) {
                 // Check if returned result is none, if so set showNoResults to be true
                 var returnedArray = r.resources.length;
@@ -88,8 +83,6 @@ Template.imagePanel.events({
           } else {
             // If tag filter is not applied, return all images
             Meteor.call("getAllImages", function(error, r) {
-              console.log("Rendering data: ");
-              console.log(r);
               if (!error) {
                 // Check if returned result is none, if so set showNoResults to be true
                 var returnedArray = r.resources.length;
@@ -121,10 +114,7 @@ Template.imagePanel.events({
       return $(this).text().trim();
     }).get().join();
     $('.edit-tags-group').hide();
-    console.log(tags);
     Meteor.call("updateImageTags", id, tags, function(error, r) {
-      console.log("Tag succeffully updated: ");
-      console.log(r);
       if (!error) {
         Session.set('selectedImage', r);
       } else {
@@ -132,4 +122,32 @@ Template.imagePanel.events({
       }
     });
   },
+  "click .image-tags li": function(e) {
+    // On click, performs a tag search of the selected tag
+    var tag = $(e.target).text();
+    Session.set('photoStream', undefined);
+    Session.set('showNoResults', false);
+    Session.set('selectedTag', tag);
+    Meteor.call("getImagebyTag", tag, function(error, r) {
+      if (!error) {
+        // Check if returned result is none, if so set showNoResults to be true
+        var returnedArray = r.resources.length;
+        if (returnedArray == 0) {
+          Session.set('showNoResults', true);
+        } else {
+          Session.set('showNoResults', false);
+          Session.set('photoStream', r.resources);
+        }
+      } else {
+        Session.set('showNoResults', true);
+        console.log(error);
+      }
+    });
+    $('.imagePanel').hide();
+    $('.main-panel, #library-panel-nav').fadeIn();
+    // Remove search value if clicked on filter
+    $('input.tag-search').val(tag);
+    e.preventDefault();
+    e.stopPropagation();
+  }
 });
