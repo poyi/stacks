@@ -8,8 +8,6 @@ import './settings.html';
 
 Template.library.onCreated(function() {
   Meteor.call("getAllImages", function(error, r) {
-    console.log("Rendering data: ");
-    console.log(r);
     if (!error) {
       // Check if returned result is none, if so set showNoResults to be true
       var returnedArray = r.resources.length;
@@ -40,6 +38,15 @@ Template.library.helpers({
   },
   noResults: function () {
     return Session.get('showNoResults');
+  },
+  accountName: function() {
+    var firstName = Meteor.user().profile.firstName;
+    if (firstName) {
+      return firstName;
+    } else {
+      var sample = "Traveler";
+      return sample;
+    }
   }
 });
 
@@ -52,10 +59,23 @@ Template.library.events({
   },
   'click .settings': function(event){
         event.preventDefault();
+        $('.settings').hide();
+        $('.close-settings').fadeIn();
         $('.main-panel, #library-panel-nav').hide();
+        $('.imagePanel').hide();
         $('#settings-panel').fadeIn();
+        $('.notification-banner').hide();
   },
-  "submit form": function(e) {
+  'click .close-settings': function(event){
+        event.preventDefault();
+        $('.close-settings').hide();
+        $('#settings-panel').hide();
+        $('.settings').fadeIn();
+        $('.imagePanel').hide();
+        $('.main-panel, #library-panel-nav').fadeIn();
+        $('.notification-banner').hide();
+  },
+  "submit #search-tags": function(e) {
     // On submit, make new call to retrieve content based on the entered tag
     var tag = $( ".tag-search" ).val();
     Session.set('selectedTag', tag);

@@ -10,6 +10,14 @@ Meteor.startup(() => {
   Accounts.urls.resetPassword = function(token) {
     return Meteor.absoluteUrl('reset-password/' + token);
   };
+
+  Accounts.onCreateUser(function(options, user) {
+    // We're enforcing at least an empty profile object to avoid needing to check
+    // for its existence later.
+    user.profile = options.profile ? options.profile : {};
+    return user;
+  });
+
   Meteor.methods({
     getAllImages: function (options) {
       console.log("Should being fetching json");
@@ -34,6 +42,10 @@ Meteor.startup(() => {
     deleteImage: function (id) {
       var results = cloudinary.api.delete_resources(id, function(result) { console.log(result) }, { invalidate: true});
       return results;
+    },
+    updateUser: function (userId, firstName, lastName) {
+      Meteor.users.update({_id:userId}, { $set:{"profile.firstName":firstName, "profile.lastName":lastName}} );
+      return true;
     }
   });
 });

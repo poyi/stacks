@@ -1,23 +1,46 @@
 <template name="settings">
   <div id="settings-panel">
+    <div class="notification-banner error">{{bannerMessage}}</div>
     <div class="settings-nav-panel">
       <ul class="settings-nav">
-        <li>My Preferences</li>
-        <li>Reset Password</li>
+        <li><div class="button passive back-link" style="margin-top: -20px;">Back to list</div></li>
+        <li id="myPreferenceLink">My Preferences</li>
+        <li id="resetPasswordLink">Reset Password</li>
         <li><a href="#" class="logout button passive">Sign Out</a></li>
       </ul>
     </div>
     <div class="settings-content">
-      <h2>Stacks Sign in</h2>
-      <form action="/reset-password" id="resetPasswordForm" method="post" class="login">
-        <div class="input-row">
-          <p>Password</p><input id="resetPasswordPassword" name="password" placeholder="New Password" type="password" >
+      {{#if preferencePanelVisible}}
+      <div class="preferences">
+        <h2>My Account</h2>
+        <div class="email-info">
+          <h3>My Email</h3>
+          <p>{{userEmail}}</p>
         </div>
-        <div class="input-row">
-          <p>Confirm Password</p><input id="resetPasswordPasswordConfirm" name="password-confirm" placeholder="Confirm" type="password" >
+        <form id="accountInfo" method="post" class="login">
+          <div class="input-row">
+            <p>First Name</p><input id="firstName" value="{{firstName}}" name="firstname">
+          </div>
+          <div class="input-row">
+            <p>Last Name</p><input id="lastName" value="{{lastName}}" name="lastname">
+          </div>
+          <input class="btn-submit button primary" type="submit" value="Update Profile">
+        </form>
+      </div>
+      {{else}}
+        <div class="change-password">
+          <h2>Change Your Password</h2>
+          <form action="/reset-password" id="changePasswordForm" method="post" class="login">
+            <div class="input-row">
+              <p>Current password</p><input id="oldPassword" name="password" placeholder="New Password" type="password" >
+            </div>
+            <div class="input-row">
+              <p>New Password</p><input id="newPassword" name="password-confirm" placeholder="Confirm" type="password" >
+            </div>
+            <input class="btn-submit button primary" type="submit" value="Reset">
+          </form>
         </div>
-        <input class="btn-submit button primary" type="submit" value="Reset">
-      </form>
+      {{/if}}
     </div>
   </div>
 </template>

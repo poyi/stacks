@@ -23,12 +23,12 @@ Template.passwordReset.events({
       Accounts.forgotPassword({email: email}, function(err) {
         if (err) {
           if (err.message === 'User not found [403]') {
-            console.log('This email does not exist.');
+            Alert('This email does not exist.');
           } else {
-            console.log('We are sorry but something went wrong.');
+            Alert('We are sorry but something went wrong. Please notify the stacks administrator');
           }
         } else {
-          console.log('Email Sent. Check your mailbox.');
+          Alert('Email Sent. Check your mailbox.');
         }
       });
 
@@ -38,9 +38,12 @@ Template.passwordReset.events({
 });
 
 Template.passwordReset.helpers({
- resetPassword: function(){
-  return Session.get('resetPassword');
- }
+  resetPassword: function(){
+    return Session.get('resetPassword');
+  },
+  bannerMessage: function(){
+    return Session.get('bannerMessage');
+  }
 });
 
 Template.passwordReset.events({
@@ -54,8 +57,7 @@ Template.passwordReset.events({
     if (password !== '' && password == passwordConfirm) {
       Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {
         if (err) {
-          console.log(err);
-          console.log('We are sorry but something went wrong.');
+          console.log('Something went wrong, please double check your entry');
         } else {
           console.log('Your password has been changed. Welcome back!');
           Session.set('resetPassword', null);
