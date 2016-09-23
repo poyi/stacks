@@ -7,7 +7,10 @@ import '../imports/ui/home.js';
 import '../imports/ui/404.html';
 import '../imports/ui/settings.js';
 import '../imports/ui/tagPanel.js';
+import '../imports/ui/album-panel.js';
+import '../imports/ui/album.js';
 import '../imports/ui/password-reset.js';
+import '../imports/api/albums/albums.js';
 
 $.cloudinary.config
     cloud_name:"travana-inc"

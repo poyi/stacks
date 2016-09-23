@@ -1,0 +1,35 @@
+<template name="albumPanel">
+  <div class="album-panel library-panel">
+    <div class="add-album-modal">
+      <h3>Create New Album</h3>
+      <!-- #TODO: refactor form class -->
+      <form class="new-album-form login">
+        <div class="input-row">
+          <p>What would you like to call the Album?</p><input id="album-name" type="text" name="name">
+        </div>
+        <div class="input-row">
+          <p>Invite Collaborator (optional)</p><input id="album-collaborators" type="text" name="collaborator">
+        </div>
+        <button class="button passive cancel-new-album" style="margin-right: 10px;">Nevermind</button><input class="button primary" type="submit" value="Create Album">
+      </form>
+    </div>
+    <h1>My Albums</h1>
+    <ul class="album-list">
+      {{#each albums}}
+        <li>
+          <a href="/albums/{{_id}}">
+            <div class="cover-1"></div><div class="cover-2"></div><div class="cover-3"></div>
+            <div class="cover-name">
+              {{#if name}}
+                {{name}}
+              {{else}}
+                Untitled
+              {{/if}}
+            </div>
+          </a>
+        </li>
+      {{/each}}
+      <li class="add-album"><div class="cover-1"></div><i class="fa fa-plus" aria-hidden="true"></i><div class="cover-name">Create New Album</div></li>
+    </ul>
+  </div>
+</template>

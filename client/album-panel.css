@@ -1,0 +1,99 @@
+.album-panel {
+  position: absolute;
+  padding: 200px 60px 0;
+  width: 100%;
+  height: 100%;
+  background: #23212C;
+  color: white;
+  display: none;
+}
+
+.album-list li {
+  width: 220px;
+  float: left;
+  position: relative;
+  margin: 0 10px 10px 0;
+  cursor: pointer;
+}
+
+.cover-1 {
+  position: absolute;
+  width: 220px;
+  height: 160px;
+  background: #e9e9e9;
+  margin-top: 20px;
+  z-index: 3;
+}
+
+.cover-2 {
+  position: absolute;
+  width: 180px;
+  height: 160px;
+  background: #242F42;
+  margin-top: 10px;
+  margin-left: 20px;
+  z-index: 2;
+}
+
+.cover-3 {
+  position: absolute;
+  width: 140px;
+  height: 160px;
+  background: #121B2B;
+  margin-left: 40px;
+  z-index: 1;
+}
+
+.cover-name {
+  margin-top: 200px;
+  font-size: 14px;
+}
+
+.add-album .cover-1 {
+  position: absolute;
+  width: 220px;
+  height: 160px;
+  background: #242F42;
+}
+
+.add-album i {
+  position: absolute;
+  margin-top: 41%;
+  margin-left: 45%;
+  z-index: 3;
+  font-size: 30px;
+}
+
+.add-album-modal {
+  position: absolute;
+  margin-left: 30%;
+  padding: 20px;
+  width: auto;
+  height: auto;
+  background: #242F42;
+  z-index: 9999;
+  border: 2px solid rgba(245, 245, 245, 0.2);
+  display: none;
+}
+
+.add-album-modal h3 {
+  margin-bottom: 30px;
+}
+
+.add-album-modal .input-row {
+  margin-bottom: 30px;
+}
+
+#edit-album-name {
+  height: 42px;
+  width: 240px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 2px solid white;
+  padding: 0 0 25px;
+  background: none;
+}
+
+#edit-album-name:focus {
+  outline: none;
+}

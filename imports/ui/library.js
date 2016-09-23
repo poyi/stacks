@@ -26,7 +26,7 @@ Template.library.onCreated(function() {
 
 Template.library.rendered = function() {
   $('#settings-panel').hide();
-  // Fade in image once loaded
+  // Fade in images when fully loaded
   init = function(obj) {
     $(obj).fadeIn('slow');
   }
@@ -59,11 +59,17 @@ Template.library.events({
   },
   'click #browse-tags': function(event){
         event.preventDefault();
-        $('.main-panel').hide();
-        $('.imagePanel').hide();
+        $('.library-panel').hide();
         $('.tag-panel').fadeIn();
         $('.tab-menu li').removeClass( "active-nav" );
         $('#browse-tags').addClass( "active-nav" );
+  },
+  'click #my-album': function(event){
+        event.preventDefault();
+        $('.library-panel').hide();
+        $('.album-panel').fadeIn();
+        $('.tab-menu li').removeClass( "active-nav" );
+        $('#my-album').addClass( "active-nav" );
   },
   'click .reset-results': function(event){
         event.preventDefault();
@@ -91,8 +97,7 @@ Template.library.events({
         $('.settings').hide();
         $('.close-settings').fadeIn();
         $('.main-panel, #library-panel-nav').hide();
-        $('.imagePanel').hide();
-        $('.tag-panel').hide();
+        $('.library-panel').hide();
         $('.tab-menu li').removeClass( "active-nav" );
         $('#settings-panel').fadeIn();
         $('.notification-banner').hide();
@@ -102,15 +107,14 @@ Template.library.events({
         $('.close-settings').hide();
         $('#settings-panel').hide();
         $('.settings').fadeIn();
-        $('.imagePanel').hide();
-        $('.tag-panel').hide();
+        $('.library-panel').hide();
         $('.tab-menu li').removeClass( "active-nav" );
         $('.main-panel, #library-panel-nav').fadeIn();
         $('.notification-banner').hide();
   },
   'click #moderate-image': function(event){
         event.preventDefault();
-        $('.tag-panel').hide();
+        $('.library-panel').hide();
         $('.main-panel, #library-panel-nav').fadeIn();
         $('.tab-menu li').removeClass( "active-nav" );
         $('#moderate-image').addClass( "active-nav" );
@@ -133,7 +137,7 @@ Template.library.events({
         });
   },
   "submit #search-tags": function(e) {
-    $('.tag-panel').hide();
+    $('.library-panel').hide();
     $('.main-panel, #library-panel-nav').fadeIn();
     // On submit, make new call to retrieve content based on the entered tag
     var tag = $( ".tag-search" ).val();

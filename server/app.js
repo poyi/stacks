@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Albums } from '../imports/api/albums/albums.js';
 
 cloudinary.config({
  cloud_name: Meteor.settings.public.CLOUDINARY_CLOUD_NAME,
@@ -7,6 +8,7 @@ cloudinary.config({
 });
 
 Meteor.startup(() => {
+
   Accounts.urls.resetPassword = function(token) {
     return Meteor.absoluteUrl('reset-password/' + token);
   };
@@ -53,6 +55,10 @@ Meteor.startup(() => {
     },
     updateUser: function (userId, firstName, lastName) {
       Meteor.users.update({_id:userId}, { $set:{"profile.firstName":firstName, "profile.lastName":lastName}} );
+      return true;
+    },
+    createAlbum: function (owner, name, collaborators) {
+      Albums.insert({owner: owner, name: name, collaborators: collaborators});
       return true;
     }
   });
