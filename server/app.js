@@ -22,14 +22,11 @@ Meteor.startup(() => {
 
   Meteor.methods({
     getAllImages: function (options) {
-      console.log("Should being fetching json");
       this.unblock();
       var results = cloudinary.api.resources(function(result) { console.log(result) }, { max_results: '500', moderations: true});
-      console.log("Fetched completed!");
       return results;
     },
     getImagebyTag: function (tag) {
-      console.log("tag is: " + tag);
       var results = cloudinary.api.resources_by_tag(tag, function(result) { console.log(result) }, { max_results: '500'});
       return results;
     },
@@ -58,8 +55,53 @@ Meteor.startup(() => {
       return true;
     },
     createAlbum: function (owner, name, collaborators) {
-      Albums.insert({owner: owner, name: name, collaborators: collaborators});
+      Albums.insert({owner: owner, name: name, collaborators: collaborators, photos: []});
       return true;
+    },
+    updateAlbumName: function (albumId, newName) {
+      Albums.update({_id:albumId}, { $set:{"name":newName}});
+      return true;
+    },
+    findAlbum: function (albumId) {
+      return Albums.findOne({_id: albumId});
+    },
+    addToAlbum: function (albumId, imageId, file_format) {
+      var album = Meteor.call("findAlbum", albumId);
+      var photosArray = album.photos;
+      var image = {
+        "image_id": imageId,
+        "file_format": file_format
+      };
+      var imageInAlbum = Meteor.call('checkImageWithinArray', image, photosArray);
+      if (imageInAlbum) {
+        console.log('Image is already in the album');
+      } else {
+        Albums.update({_id:albumId},{$push: { photos: image } });
+        console.log('Image added to album!');
+        return true;
+      }
+    },
+    removeFromAlbum: function (albumId, imageId, file_format) {
+      var photo = {
+        "image_id": imageId,
+        "file_format": file_format
+      };
+      Albums.update({_id:albumId},{$pull: { photos: photo } });
+      return true;
+    },
+    checkImageWithinArray: function (image, photosArray) {
+      var imageItem = JSON.stringify(image);
+      var i;
+      if(photosArray) {
+        for (i = 0; i < photosArray.length; i++) {
+          var arrayItem = JSON.stringify(photosArray[i]);
+            if (arrayItem == imageItem) {
+                return true;
+            }
+        }
+      } else {
+        return false
+      }
     }
   });
 });

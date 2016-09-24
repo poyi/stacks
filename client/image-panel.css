@@ -109,3 +109,29 @@
   color: #242424;
   min-width: 200px;
 }
+
+.add-to-album {
+  margin-top: 10px;
+  position: absolute;
+  padding: 20px 20px 0;
+  width: 400px;
+  background: #242F42;
+  z-index: 9999;
+  border: 2px solid rgba(245, 245, 245, 0.2);
+  display: none;
+}
+
+.add-to-album li {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 14px !important;
+}
+
+.add-to-album i {
+  margin-right: 8px;
+}
+
+.close-album-list-link {
+  display: none;
+}

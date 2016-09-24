@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Albums } from '../api/albums/albums.js';
 
 import './image-panel.html';
 
@@ -15,17 +16,26 @@ Template.imagePanel.rendered = function() {
 }
 
 Template.imagePanel.helpers({
+  withInAlbum: function() {
+    var AlbumId = FlowRouter.getParam("albumId");
+    if(AlbumId) {
+      return true;
+    }
+  },
   image: function () {
     return Session.get('selectedImage');
   },
   tags: function () {
     var image = Session.get('selectedImage');
-    var tags = image.tags.toString();
-    $('#image-tags').importTags(tags);
-    return tags;
+    if (image.tags) {
+      var tags = image.tags.toString();
+      $('#image-tags').importTags(tags);
+      return tags;
+    }
   },
   moderateQueue: function () {
     var image = Session.get('selectedImage');
+    // #TODO: Cover case for when image is not available, coming from album
     if (image) {
       var status = image.moderation[0].status;
       if(status == "pending") {
@@ -43,10 +53,60 @@ Template.imagePanel.helpers({
     } else {
       return 0;
     }
+  },
+  albums: function () {
+    var currentUser = Meteor.userId();
+    var albums = Albums.find({ owner: currentUser }).fetch();
+    return albums;
   }
 });
-
 Template.imagePanel.events({
+  'click .remove-from-album': function (e){
+    e.preventDefault();
+    var albumId = FlowRouter.getParam("albumId");
+    var imageId = Session.get('selectedImage').public_id;
+    var file_format = Session.get('selectedImage').format;
+    Meteor.call("removeFromAlbum", albumId, imageId, file_format, function(error, r) {
+      if (!error) {
+        // #TODO: Add success message
+        console.log('removed image from album');
+        $('.imagePanel').hide();
+        $('.main-panel, #library-panel-nav').fadeIn();
+      } else {
+        console.log(error);
+      }
+    });
+    $('.add-to-album-link').show();
+    $('.add-to-album, .close-album-list-link').hide();
+  },
+  'click .album-link': function (e){
+    e.preventDefault();
+    var albumId = $(e.target).attr('data-id');
+    var imageId = Session.get('selectedImage').public_id;
+    var file_format = Session.get('selectedImage').format;
+    Meteor.call("addToAlbum", albumId, imageId, file_format, function(error, r) {
+      if (!error) {
+        // #TODO: Add success message
+        console.log('Added image to album');
+      } else {
+        console.log(error);
+      }
+    });
+    $('.add-to-album-link').show();
+    $('.add-to-album, .close-album-list-link').hide();
+  },
+  'click .add-to-album-link': function (e){
+    e.preventDefault();
+    $('.add-to-album').show();
+    $('.add-to-album-link').hide();
+    $('.close-album-list-link').show();
+  },
+  'click .close-album-list-link': function (e){
+    e.preventDefault();
+    $('.add-to-album-link').show();
+    $('.close-album-list-link').hide();
+    $('.add-to-album').fadeOut();
+  },
   'click .back-link': function (e){
     e.preventDefault();
     $('.imagePanel').hide();

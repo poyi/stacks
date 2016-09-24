@@ -10,7 +10,8 @@ Template.albumPanel.onCreated( () => {
 
 Template.albumPanel.helpers({
   albums: function () {
-    var albums = Albums.find().fetch();
+    var currentUser = Meteor.userId();
+    var albums = Albums.find({ owner: currentUser }).fetch();
     return albums;
   }
 });

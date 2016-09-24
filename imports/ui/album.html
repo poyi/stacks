@@ -16,20 +16,23 @@
   <div class="panel-navigation">
     <ul class="tab-menu">
       <!-- #TODO: Adjust the inline style -->
-      <li style="margin-top: -15px;">
+      <li style="margin-top: -10px;">
         <a href="/library" class="button passive">View Library</a>
       </li>
       <li>
-        <input id="edit-album-name" type=text name="album-name" value={{name}} />
+        <form id="album-name-form">
+          <input id="edit-album-name" type=text name="album-name" value={{name}} />
+        </form>
       </li>
     </ul>
   </div>
   <div class="main-container">
+    {{> imagePanel}}
     <div class="main-panel library-panel">
       <div class="image-container">
         {{#if albumPhotos}}
           {{#each albumPhotos}}
-              <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{public_id}}.{{format}}" data-id="{{public_id}}" onerror="this.style.display='none'"/>
+              <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{image_id}}.{{file_format}}" data-id="{{image_id}}" onerror="this.style.display='none'"/>
           {{/each}}
         {{else}}
           {{#if noAlbumPhoto}}

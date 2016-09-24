@@ -124,7 +124,6 @@ Template.library.events({
             // Check if returned result is none, if so set showNoResults to be true
             var returnedArray = r.resources.length;
             if (returnedArray == 0) {
-              console.log('moderate empty');
               Session.set('showNoResults', true);
             } else {
               Session.set('showNoResults', false);
@@ -187,11 +186,14 @@ Template.library.events({
       if (!error) {
         // Check if returned result is none, if so set showNoResults to be true
         Session.set('selectedImage', r);
+        console.log(r);
         $('.main-panel, #library-panel-nav').hide();
         $('.imagePanel').fadeIn();
         // Set the tag input for image edit
-        var tags = r.tags.toString();
-        $('#image-tags').importTags(tags);
+        if (r.tags) {
+          var tags = r.tags.toString();
+          $('#image-tags').importTags(tags);
+        }
       } else {
         console.log(error);
       }

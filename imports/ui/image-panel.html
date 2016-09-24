@@ -1,4 +1,5 @@
 <template name="imagePanel">
+  <!-- #TODO: Potentially break out imagePanel as a page with url -->
   <div class="imagePanel">
     <div class="panel-navigation">
       <ul class="tab-menu">
@@ -21,14 +22,31 @@
               <input type="text" value="{{image.url}}" disabled>
             </div>
           </li>
-          <li class="menu-actions">
-            <button class="button passive"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
-          </li>
           {{#if isInRole 'admin'}}
             <li class="menu-actions">
               <a class="button delete delete-image"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Image</a>
             </li>
           {{/if}}
+        {{/if}}
+        {{#if withInAlbum}}
+            <li class="menu-actions">
+              <a class="button delete remove-from-album"><i class="fa fa-trash-o" aria-hidden="true"></i>Remove From Album</a>
+            </li>
+          {{else}}
+            <li class="menu-actions">
+              <button class="button passive add-to-album-link"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
+              <button class="button passive close-album-list-link"><i class="fa fa-times-circle-o" aria-hidden="true"></i>Close Album List</button>
+              <div class="add-to-album">
+                <!-- #TODO: Check if image is already in certain album and indicate that -->
+                <ul>
+                  {{#if albums}}
+                    {{#each albums}}
+                      <li class="album-link" data-id="{{_id}}"><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{name}}</li>
+                    {{/each}}
+                  {{/if}}
+                </ul>
+              </div>
+            </li>
         {{/if}}
       </ul>
     </div>
