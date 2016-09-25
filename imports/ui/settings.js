@@ -7,9 +7,29 @@ Template.settings.rendered = function() {
   Session.set('preferencePanelVisible', true);
 }
 
+Template.AccountLink.helpers({
+  accountName: function() {
+    var firstName = Meteor.user().profile.firstName;
+    if (firstName) {
+      return firstName;
+    } else {
+      var sample = "Traveler";
+      return sample;
+    }
+  }
+});
+
 Template.settings.helpers({
   bannerMessage: function(){
     return Session.get('bannerMessage');
+  },
+  lastRoute: function() {
+    var lastRoute = Session.get('lastRoute');
+    if (lastRoute) {
+      return lastRoute;
+    } else {
+      return "/library";
+    }
   },
   preferencePanelVisible: function(){
     return Session.get('preferencePanelVisible');
@@ -40,15 +60,6 @@ Template.settings.events({
         Meteor.logout(function (success, error) {
             FlowRouter.go('/');
         });
-  },
-  'click .back-link': function (e){
-    e.preventDefault();
-    $('#settings-panel').hide();
-    $('.close-settings').hide();
-    $('.settings').fadeIn();
-    $('.tag-panel').hide();
-    $('.main-panel, #library-panel-nav').fadeIn();
-    $('.notification-banner').hide();
   },
   'click #myPreferenceLink': function(event){
       event.preventDefault();

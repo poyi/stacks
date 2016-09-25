@@ -23,31 +23,38 @@ Meteor.startup(() => {
   Meteor.methods({
     getAllImages: function (options) {
       this.unblock();
-      var results = cloudinary.api.resources(function(result) { console.log(result) }, { max_results: '500', moderations: true});
+      var results = cloudinary.api.resources(function(result) {
+        // Remove any pending or placeholer images before returning to frontend
+        for(var i = result.resources.length-1; i--;){
+        	if (result.resources[i].moderation_status == "pending" || result.resources[i].placeholder == true) {
+            result.resources.splice(i, 1);
+          }
+        }
+      }, { max_results: '500', moderations: true});
       return results;
     },
     getImagebyTag: function (tag) {
-      var results = cloudinary.api.resources_by_tag(tag, function(result) { console.log(result) }, { max_results: '500'});
+      var results = cloudinary.api.resources_by_tag(tag, function(result) { }, { max_results: '500'});
       return results;
     },
     updateStatus: function (id, status) {
-      var results = cloudinary.api.update(id, function(result) { console.log(result) }, { moderation_status: status });
+      var results = cloudinary.api.update(id, function(result) { }, { moderation_status: status });
       return results;
     },
     getImage: function (id) {
-      var results = cloudinary.api.resource(id, function(result) { console.log(result) });
+      var results = cloudinary.api.resource(id, function(result) { });
       return results;
     },
     getModerateQueue: function (id) {
-      var results = cloudinary.api.resources_by_moderation('manual', 'pending', function(result) { console.log(result) });
+      var results = cloudinary.api.resources_by_moderation('manual', 'pending', function(result) { });
       return results;
     },
     updateImageTags: function (id, tags) {
-      var results = cloudinary.api.update(id, function(result) { console.log(result) }, { tags: tags });
+      var results = cloudinary.api.update(id, function(result) { }, { tags: tags });
       return results;
     },
     deleteImage: function (id) {
-      var results = cloudinary.api.delete_resources(id, function(result) { console.log(result) }, { invalidate: true});
+      var results = cloudinary.api.delete_resources(id, function(result) { }, { invalidate: true});
       return results;
     },
     updateUser: function (userId, firstName, lastName) {
@@ -74,15 +81,14 @@ Meteor.startup(() => {
       };
       var imageInAlbum = Meteor.call('checkImageWithinArray', image, photosArray);
       if (imageInAlbum) {
-        console.log('Image is already in the album');
       } else {
         Albums.update({_id:albumId},{$push: { photos: image } });
-        console.log('Image added to album!');
         return true;
       }
     },
     removeFromAlbum: function (albumId, imageId, file_format) {
-      var photo = {
+      var photo =
+      {
         "image_id": imageId,
         "file_format": file_format
       };

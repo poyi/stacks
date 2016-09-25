@@ -1,7 +1,6 @@
 .imagePanel {
   width: 100%;
   height: calc(100vh - 130px);
-  display: none;
   position: relative;
   margin-top: 130px;
 }
@@ -85,13 +84,6 @@
   color: #777 !important;
   width: auto !important;
   padding: 9px;
-}
-
-.preview-loader {
-  position: absolute;
-  z-index: -9;
-  top: 30%;
-  left: 50%;
 }
 
 #share-image-modal {

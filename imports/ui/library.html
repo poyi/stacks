@@ -1,29 +1,23 @@
 <template name="library">
     <div class="navigation">
-      <!-- #TODO:20 logo redirect should go back to default library view -->
-      <h1><a class="logo" href="{{pathFor route='/'}}">Stacks</a></h1>
+      <h1><a class="logo" href="/library">Stacks</a></h1>
       <ul class="nav-links">
-        {{#if currentUser}}
-        <!-- #TODO:20 fade in user name to say hi -->
-            <li><a href="#" class="settings">Hi {{accountName}}!</a></li>
-            <li><a href="#" class="close-settings"><i class="fa fa-times" aria-hidden="true"></i>
-</a></li>
-        {{else}}
-            <li><a href="{{pathFor route='login'}}">Login</a></li>
-        {{/if}}
+        {{> AccountLink}}
       </ul>
     </div>
-    {{> settings}}
     <div id="library-panel-nav" class="panel-navigation">
       <ul class="tab-menu">
         <li>
+          <!-- #TODO: Search with multiple tags -->
           <form id="search-tags">
             <i class="fa fa-search" aria-hidden="true"></i><input class="tag-search" placeholder="Search by tags.."/>
           </form>
         </li>
         <li id="browse-tags">Browse Tags</li>
-        <li id="my-album">My Albums</li>
-        <li id="moderate-image">Moderate Images</li>
+        <li><a href="/my-albums">My Albums</a></li>
+        {{#if moderateQueue}}
+          <li><a href="/moderate-queue">Moderate Images</a></li>
+        {{/if}}
         <li class="menu-actions">
           {{#if isInRole 'admin, contributor'}}
             <div class="button passive">
@@ -42,13 +36,11 @@
     </div>
     <div class="main-container">
       {{> tagPanel}}
-      {{> imagePanel}}
-      {{> albumPanel}}
       <div class="main-panel library-panel">
         <div class="image-container">
           {{#if photoStream}}
             {{#each photoStream}}
-                <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{public_id}}.{{format}}" data-id="{{public_id}}" onerror="this.style.display='none'"/>
+                <a href="/images/{{public_id}}"><img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{public_id}}.{{format}}" data-id="{{public_id}}" onerror="this.style.display='none'"/></a>
             {{/each}}
           {{else}}
             {{#if noResults}}

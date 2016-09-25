@@ -1,9 +1,18 @@
 <template name="imagePanel">
-  <!-- #TODO: Potentially break out imagePanel as a page with url -->
+  <div class="navigation">
+    <h1><a class="logo" href="/library">Stacks</a></h1>
+    <ul class="nav-links">
+      {{> AccountLink}}
+    </ul>
+  </div>
   <div class="imagePanel">
     <div class="panel-navigation">
       <ul class="tab-menu">
-        <li style="margin-top: -20px;"><div class="button passive back-link"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to list</div></li>
+        {{#if withInAlbum}}
+          <li style="margin-top: -12px;"><a href="/albums/{{withInAlbum}}"><div class="button passive"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to Album</div></a></li>
+        {{else}}
+          <li style="margin-top: -12px;"><a href="/library"><div class="button passive"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to Library</div></a></li>
+        {{/if}}
         {{#if moderateQueue}}
           <li class="menu-actions">
             <button class="button primary moderate-approve"><i class="fa fa-download" aria-hidden="true"></i>Approve Image</button>
@@ -27,64 +36,67 @@
               <a class="button delete delete-image"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Image</a>
             </li>
           {{/if}}
-        {{/if}}
-        {{#if withInAlbum}}
-            <li class="menu-actions">
-              <a class="button delete remove-from-album"><i class="fa fa-trash-o" aria-hidden="true"></i>Remove From Album</a>
-            </li>
-          {{else}}
-            <li class="menu-actions">
-              <button class="button passive add-to-album-link"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
-              <button class="button passive close-album-list-link"><i class="fa fa-times-circle-o" aria-hidden="true"></i>Close Album List</button>
-              <div class="add-to-album">
-                <!-- #TODO: Check if image is already in certain album and indicate that -->
-                <ul>
-                  {{#if albums}}
-                    {{#each albums}}
-                      <li class="album-link" data-id="{{_id}}"><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{name}}</li>
-                    {{/each}}
-                  {{/if}}
-                </ul>
-              </div>
-            </li>
+          {{#if withInAlbum}}
+              <li class="menu-actions">
+                <a class="button delete remove-from-album"><i class="fa fa-trash-o" aria-hidden="true"></i>Remove From Album</a>
+              </li>
+            {{else}}
+              <li class="menu-actions">
+                <button class="button passive add-to-album-link"><i class="fa fa-plus-square-o" aria-hidden="true"></i>Add to Album</button>
+                <button class="button passive close-album-list-link"><i class="fa fa-times-circle-o" aria-hidden="true"></i>Close Album List</button>
+                <div class="add-to-album">
+                  <!-- #TODO: Check if image is already in certain album and indicate that -->
+                  <ul>
+                    {{#if albums}}
+                      {{#each albums}}
+                        <li class="album-link" data-id="{{_id}}"><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{name}}</li>
+                      {{/each}}
+                    {{/if}}
+                  </ul>
+                </div>
+              </li>
+          {{/if}}
         {{/if}}
       </ul>
     </div>
-    <div class="preview-panel">
-      {{#if image}}
-        <div id="preview-loader" class="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
+    {{#if image}}
+      <div class="preview-panel">
+        <!-- #TODO: image not fading in  -->
         <img class="image-preview" onload="loadDetailImage(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
-      {{/if}}
-    </div>
-    <div class="info-panel">
-      <div class="image-meta">
-        <div class="image-title">
-          {{image.public_id}}
-        </div>
-        <div class="meta-row">
-          <div class="image-dimension">
-            Dimension: {{image.width}} x {{image.height}}
+      </div>
+      <div class="info-panel">
+        <div class="image-meta">
+          <div class="image-title">
+            <!-- #TODO: Add ability to update image title -->
+            {{image.public_id}}
           </div>
-          <div class="image-size">
-            File size: {{filesize}} MB
+          <div class="meta-row">
+            <div class="image-dimension">
+              Dimension: {{image.width}} x {{image.height}}
+            </div>
+            <div class="image-size">
+              File size: {{filesize}} MB
+            </div>
           </div>
-        </div>
-        <div class="tags-group">
-          <ul class="image-tags">
-            {{#each image.tags}}
-              <li>{{this}}</li>
-            {{/each}}
-          </ul>
-          {{#if isInRole 'admin, contributor'}}
-            <button class="button passive edit-tag-link"><i class="fa fa-tags" aria-hidden="true"></i>Add / Edit Tags</button>
-          {{/if}}
-        </div>
-        <div class="edit-tags-group">
-          <input name="tags" id="image-tags" />
-          <button class="button primary update-tags-link"><i class="fa fa-floppy-o" aria-hidden="true"></i>Apply Tags</button>
+          <div class="tags-group">
+            <ul class="image-tags">
+              {{#each image.tags}}
+                <li>{{this}}</li>
+              {{/each}}
+            </ul>
+            {{#if isInRole 'admin, contributor'}}
+              <button class="button passive edit-tag-link"><i class="fa fa-tags" aria-hidden="true"></i>Add / Edit Tags</button>
+            {{/if}}
+          </div>
+          <div class="edit-tags-group">
+            <input name="tags" id="image-tags" />
+            <button class="button primary update-tags-link"><i class="fa fa-floppy-o" aria-hidden="true"></i>Apply Tags</button>
+          </div>
         </div>
       </div>
-    </div>
+    {{else}}
+      <div id="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
+    {{/if}}
   </div>
 </template>
 

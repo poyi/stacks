@@ -1,0 +1,36 @@
+<template name="moderatePanel">
+  <div class="navigation">
+    <h1><a class="logo" href="/library">Stacks</a></h1>
+    <ul class="nav-links">
+      {{> AccountLink}}
+    </ul>
+  </div>
+  <div class="panel-navigation">
+    <ul class="tab-menu">
+      <!-- #TODO: Adjust the inline style -->
+      <li style="margin-top: -12px;">
+        <a href="/library" class="button passive"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to Library</a>
+      </li>
+      <li>
+        Moderate Images
+      </li>
+    </ul>
+  </div>
+  <div class="main-container">
+    <div class="main-panel library-panel">
+      <div class="image-container">
+        {{#if photoStream}}
+          {{#each photoStream}}
+              <a href="/images/{{public_id}}"><img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{public_id}}.{{format}}" data-id="{{public_id}}" onerror="this.style.display='none'"/></a>
+          {{/each}}
+        {{else}}
+          {{#if noResults}}
+            <p class="no-results">No Results Found</p>
+          {{else}}
+            <div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div>
+          {{/if}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</template>

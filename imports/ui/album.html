@@ -1,23 +1,15 @@
 <template name="album">
   <div class="navigation">
-    <h1><a class="logo" href="{{pathFor route='/'}}">Stacks</a></h1>
+    <h1><a class="logo" href="/library">Stacks</a></h1>
     <ul class="nav-links">
-      {{#if currentUser}}
-      <!-- #TODO:20 fade in user name to say hi -->
-          <li><a href="#" class="settings">Hi {{accountName}}!</a></li>
-          <li><a href="#" class="close-settings"><i class="fa fa-times" aria-hidden="true"></i>
-</a></li>
-      {{else}}
-          <li><a href="{{pathFor route='login'}}">Login</a></li>
-      {{/if}}
+      {{> AccountLink}}
     </ul>
   </div>
-  {{> settings}}
   <div class="panel-navigation">
     <ul class="tab-menu">
       <!-- #TODO: Adjust the inline style -->
-      <li style="margin-top: -10px;">
-        <a href="/library" class="button passive">View Library</a>
+      <li style="margin-top: -12px;">
+        <a href="/my-albums" class="button passive"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to My Albums</a>
       </li>
       <li>
         <form id="album-name-form">
@@ -27,12 +19,11 @@
     </ul>
   </div>
   <div class="main-container">
-    {{> imagePanel}}
     <div class="main-panel library-panel">
       <div class="image-container">
         {{#if albumPhotos}}
           {{#each albumPhotos}}
-              <img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{image_id}}.{{file_format}}" data-id="{{image_id}}" onerror="this.style.display='none'"/>
+              <a href="/{{albumId}}/images/{{image_id}}"><img class="image-thumb" onload="init(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,w_220,h_160/{{image_id}}.{{file_format}}" data-id="{{image_id}}" onerror="this.style.display='none'"/></a>
           {{/each}}
         {{else}}
           {{#if noAlbumPhoto}}

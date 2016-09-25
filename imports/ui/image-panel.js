@@ -4,6 +4,26 @@ import { Albums } from '../api/albums/albums.js';
 
 import './image-panel.html';
 
+Template.imagePanel.onCreated(function() {
+  Session.set('selectedImage', false);
+  Template.instance().subscribe( 'albums' );
+  var albumId = FlowRouter.getParam("albumId");
+  var imageId = FlowRouter.getParam("imageId");
+  Session.set('albumId', albumId);
+  Meteor.call("getImage", imageId, function(error, r) {
+    if (!error) {
+      Session.set('selectedImage', r);
+      // Set the tag input for image edit
+      if (r.tags) {
+        var tags = r.tags.toString();
+        $('#image-tags').importTags(tags);
+      }
+    } else {
+      console.log(error);
+    }
+  });
+});
+
 Template.imagePanel.rendered = function() {
   $('#image-tags').tagsInput({
     'defaultText':'Type here to add a tag'
@@ -17,10 +37,8 @@ Template.imagePanel.rendered = function() {
 
 Template.imagePanel.helpers({
   withInAlbum: function() {
-    var AlbumId = FlowRouter.getParam("albumId");
-    if(AlbumId) {
-      return true;
-    }
+    var album = Session.get('albumId');
+    return album;
   },
   image: function () {
     return Session.get('selectedImage');
@@ -35,8 +53,7 @@ Template.imagePanel.helpers({
   },
   moderateQueue: function () {
     var image = Session.get('selectedImage');
-    // #TODO: Cover case for when image is not available, coming from album
-    if (image) {
+    if (image && image.moderation) {
       var status = image.moderation[0].status;
       if(status == "pending") {
         return true;
@@ -58,26 +75,32 @@ Template.imagePanel.helpers({
     var currentUser = Meteor.userId();
     var albums = Albums.find({ owner: currentUser }).fetch();
     return albums;
+  },
+  accountName: function() {
+    var firstName = Meteor.user().profile.firstName;
+    if (firstName) {
+      return firstName;
+    } else {
+      var sample = "Traveler";
+      return sample;
+    }
   }
 });
 Template.imagePanel.events({
   'click .remove-from-album': function (e){
     e.preventDefault();
-    var albumId = FlowRouter.getParam("albumId");
+    var albumId = Session.get('albumId');
     var imageId = Session.get('selectedImage').public_id;
     var file_format = Session.get('selectedImage').format;
     Meteor.call("removeFromAlbum", albumId, imageId, file_format, function(error, r) {
       if (!error) {
         // #TODO: Add success message
-        console.log('removed image from album');
-        $('.imagePanel').hide();
-        $('.main-panel, #library-panel-nav').fadeIn();
+        var currentAlbum = Session.get('albumId');
+        FlowRouter.go("/albums/" + currentAlbum);
       } else {
         console.log(error);
       }
     });
-    $('.add-to-album-link').show();
-    $('.add-to-album, .close-album-list-link').hide();
   },
   'click .album-link': function (e){
     e.preventDefault();
@@ -87,7 +110,7 @@ Template.imagePanel.events({
     Meteor.call("addToAlbum", albumId, imageId, file_format, function(error, r) {
       if (!error) {
         // #TODO: Add success message
-        console.log('Added image to album');
+        console.log('Image is in album');
       } else {
         console.log(error);
       }
@@ -117,10 +140,6 @@ Template.imagePanel.events({
     $('.tags-group').hide();
     $('.edit-tags-group').fadeIn();
   },
-  'click': function (e){
-    e.preventDefault();
-    $('#share-image-modal').fadeOut();
-  },
   'click .share-image-link, #share-image-modal': function (e){
     e.preventDefault();
     $('#share-image-modal').fadeIn();
@@ -131,7 +150,7 @@ Template.imagePanel.events({
     var id = Session.get('selectedImage').public_id;
     Meteor.call("updateStatus", id, status, function(error, r) {
       if (!error) {
-        Session.set('selectedImage', r);
+        FlowRouter.go('/moderate-queue');
       } else {
         console.log(error);
       }
@@ -139,11 +158,11 @@ Template.imagePanel.events({
   },
   'click .moderate-reject': function (e){
     e.preventDefault();
-    var status = "reject";
+    var status = "rejected";
     var id = Session.get('selectedImage').public_id;
     Meteor.call("updateStatus", id, status, function(error, r) {
       if (!error) {
-        Session.set('selectedImage', r);
+        FlowRouter.go('/moderate-queue');
       } else {
         console.log(error);
       }
@@ -153,46 +172,9 @@ Template.imagePanel.events({
     e.preventDefault();
     if (confirm("Are you sure you want to delete this image?")) {
       var id = Session.get('selectedImage').public_id;
-      $('.imagePanel').fadeOut();
       Meteor.call("deleteImage", id, function(error, r) {
         if (!error) {
-          Session.set('selectedImage', undefined);
-          // If a tag filter was applied, fetch the latest
-          var tag = Session.get('selectedTag');
-          if (tag) {
-            Meteor.call("getImagebyTag", tag, function(error, r) {
-              if (!error) {
-                // Check if returned result is none, if so set showNoResults to be true
-                var returnedArray = r.resources.length;
-                if (returnedArray == 0) {
-                  Session.set('showNoResults', true);
-                } else {
-                  Session.set('showNoResults', false);
-                  Session.set('photoStream', r.resources);
-                }
-              } else {
-                Session.set('showNoResults', true);
-                console.log(error);
-              }
-            });
-          } else {
-            // If tag filter is not applied, return all images
-            Meteor.call("getAllImages", function(error, r) {
-              if (!error) {
-                // Check if returned result is none, if so set showNoResults to be true
-                var returnedArray = r.resources.length;
-                if (returnedArray == 0) {
-                  Session.set('showNoResults', true);
-                } else {
-                  Session.set('showNoResults', false);
-                  Session.set('photoStream', r.resources);
-                }
-              } else {
-                Session.set('showNoResults', true);
-                console.log(error);
-              }
-            });
-          }
+          FlowRouter.go('/library');
         } else {
           console.log(error);
         }

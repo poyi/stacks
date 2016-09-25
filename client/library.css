@@ -9,7 +9,7 @@
   top: 60px;
   background: #23212C;
   width: 100%;
-  z-index: 999;
+  z-index: 9;
 }
 
 .tab-menu {
@@ -30,7 +30,7 @@
 
 .menu-actions {
   float: right !important;
-  margin-top: -20px !important;
+  margin-top: -12px !important;
   margin-right: 10px !important;
 }
 
@@ -94,8 +94,11 @@
 }
 
 .loading-icon {
-  margin: 14% auto 0;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 30vh;
 }
 
 .loader {

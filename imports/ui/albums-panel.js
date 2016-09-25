@@ -2,10 +2,12 @@ import { Template } from 'meteor/templating';
 import { Albums } from '../api/albums/albums.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './album-panel.html';
+import './albums-panel.html';
 
 Template.albumPanel.onCreated( () => {
   Template.instance().subscribe( 'albums' );
+  // Clear within album state for the image panel nav
+  Session.set('albumId', false);
 });
 
 Template.albumPanel.helpers({

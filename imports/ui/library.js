@@ -2,11 +2,11 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './library.html';
-import './image-panel.html';
 import './uploader.html';
-import './settings.html';
 
 Template.library.onCreated(function() {
+  // Clear within album state for the image panel nav
+  Session.set('albumId', false);
   Meteor.call("getAllImages", function(error, r) {
     if (!error) {
       // Check if returned result is none, if so set showNoResults to be true
@@ -25,7 +25,6 @@ Template.library.onCreated(function() {
 });
 
 Template.library.rendered = function() {
-  $('#settings-panel').hide();
   // Fade in images when fully loaded
   init = function(obj) {
     $(obj).fadeIn('slow');
@@ -39,14 +38,20 @@ Template.library.helpers({
   noResults: function () {
     return Session.get('showNoResults');
   },
-  accountName: function() {
-    var firstName = Meteor.user().profile.firstName;
-    if (firstName) {
-      return firstName;
-    } else {
-      var sample = "Traveler";
-      return sample;
-    }
+  moderateQueue: function () {
+    Meteor.call("getModerateQueue", function(error, r) {
+      if (!error) {
+        // Check if returned result is none, if so hide the moderate link
+        var returnedArray = r.resources.length;
+        if (returnedArray == 0) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        console.log(error);
+      }
+    });
   }
 });
 
@@ -63,13 +68,6 @@ Template.library.events({
         $('.tag-panel').fadeIn();
         $('.tab-menu li').removeClass( "active-nav" );
         $('#browse-tags').addClass( "active-nav" );
-  },
-  'click #my-album': function(event){
-        event.preventDefault();
-        $('.library-panel').hide();
-        $('.album-panel').fadeIn();
-        $('.tab-menu li').removeClass( "active-nav" );
-        $('#my-album').addClass( "active-nav" );
   },
   'click .reset-results': function(event){
         event.preventDefault();
@@ -91,26 +89,6 @@ Template.library.events({
             console.log(error);
           }
         });
-  },
-  'click .settings': function(event){
-        event.preventDefault();
-        $('.settings').hide();
-        $('.close-settings').fadeIn();
-        $('.main-panel, #library-panel-nav').hide();
-        $('.library-panel').hide();
-        $('.tab-menu li').removeClass( "active-nav" );
-        $('#settings-panel').fadeIn();
-        $('.notification-banner').hide();
-  },
-  'click .close-settings': function(event){
-        event.preventDefault();
-        $('.close-settings').hide();
-        $('#settings-panel').hide();
-        $('.settings').fadeIn();
-        $('.library-panel').hide();
-        $('.tab-menu li').removeClass( "active-nav" );
-        $('.main-panel, #library-panel-nav').fadeIn();
-        $('.notification-banner').hide();
   },
   'click #moderate-image': function(event){
         event.preventDefault();
@@ -179,24 +157,4 @@ Template.library.events({
     e.preventDefault();
     e.stopPropagation();
   },
-  "click .image-thumb": function(e) {
-    Session.set('selectedImage', false);
-    var selectedImage = $(e.target).attr("data-id");
-    Meteor.call("getImage", selectedImage, function(error, r) {
-      if (!error) {
-        // Check if returned result is none, if so set showNoResults to be true
-        Session.set('selectedImage', r);
-        console.log(r);
-        $('.main-panel, #library-panel-nav').hide();
-        $('.imagePanel').fadeIn();
-        // Set the tag input for image edit
-        if (r.tags) {
-          var tags = r.tags.toString();
-          $('#image-tags').importTags(tags);
-        }
-      } else {
-        console.log(error);
-      }
-    });
-  }
 });

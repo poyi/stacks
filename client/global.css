@@ -115,6 +115,7 @@ h1 {
 	position: fixed;
 	background: #23212C;
 	z-index: 999;
+	top: 0;
 }
 
 .navigation a {
@@ -131,10 +132,6 @@ h1 {
 
 .nav-links li a {
 	text-decoration: none;
-}
-
-.close-settings {
-	display: none;
 }
 
 .notification-banner {
