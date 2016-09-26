@@ -33,6 +33,8 @@ Template.album.helpers({
       } else {
         Session.set('noAlbumPhoto', true);
       }
+    } else {
+      Session.set('noAlbumPhoto', true);
     }
   },
   name: function() {
@@ -48,6 +50,20 @@ Template.album.helpers({
 });
 
 Template.album.events({
+  'click .delete-album': function(event){
+        event.preventDefault();
+        var albumId = Session.get("albumId");
+        if (confirm("Are you sure you want to delete this album? (The images will remain in your library)")) {
+          Meteor.call("deleteAlbum", albumId, function(error, r) {
+            if (!error) {
+              FlowRouter.go('/my-albums');
+            } else {
+              console.log(error);
+            }
+          });
+        }
+        return false;
+  },
   'submit #album-name-form': function(event){
         event.preventDefault();
         var albumId = Session.get("albumId");
@@ -59,24 +75,5 @@ Template.album.events({
             console.log(error);
           }
         });
-  },
-  "click .image-thumb": function(e) {
-    Session.set('selectedImage', false);
-    var selectedImage = $(e.target).attr("data-id");
-    Meteor.call("getImage", selectedImage, function(error, r) {
-      if (!error) {
-        // Check if returned result is none, if so set showNoResults to be true
-        Session.set('selectedImage', r);
-        $('.main-panel, #library-panel-nav').hide();
-        $('.imagePanel').fadeIn();
-        // Set the tag input for image edit
-        if (r.tags) {
-          var tags = r.tags.toString();
-          $('#image-tags').importTags(tags);
-        }
-      } else {
-        console.log(error);
-      }
-    });
   }
 });

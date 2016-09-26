@@ -15,6 +15,18 @@
   cursor: pointer;
 }
 
+.cover-0 {
+  position: absolute;
+  width: 220px;
+  height: 160px;
+  background: none;
+  margin-top: 20px;
+  pointer-events: none;
+  box-shadow: inset 0px 30px 20px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: all .2s ease-in-out;
+}
+
 .cover-1 {
   position: absolute;
   width: 220px;
@@ -22,30 +34,44 @@
   background: #e9e9e9;
   margin-top: 20px;
   z-index: 3;
+  transition: all .2s ease-in-out;
+}
+
+.cover-1:hover {
+  margin-top: 25px;
+  transform: rotateX(20deg);
 }
 
 .cover-2 {
   position: absolute;
   width: 180px;
-  height: 160px;
-  background: #242F42;
-  margin-top: 10px;
+  height: 150px;
+  background: #1882C9;
+  margin-top: 20px;
   margin-left: 20px;
   z-index: 2;
+  perspective: 1000px;
+  opacity: 0.5;
+  transition: all .3s ease-in-out;
 }
 
 .cover-3 {
   position: absolute;
   width: 140px;
-  height: 160px;
-  background: #121B2B;
+  height: 150px;
+  background: white;
+  margin-top: 20px;
   margin-left: 40px;
   z-index: 1;
+  opacity: 0.1;
+  erspective: 1000px;
+  transition: all .3s ease-in-out;
 }
 
 .cover-name {
   margin-top: 200px;
   font-size: 14px;
+  color: #e8e8e8;
 }
 
 .add-album .cover-1 {

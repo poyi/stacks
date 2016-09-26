@@ -14,6 +14,7 @@ Template.albumPanel.helpers({
   albums: function () {
     var currentUser = Meteor.userId();
     var albums = Albums.find({ owner: currentUser }).fetch();
+    console.log(albums);
     return albums;
   }
 });
@@ -22,6 +23,18 @@ Template.albumPanel.events({
   'click .add-album': function(event){
       event.preventDefault();
       $('.add-album-modal').fadeIn();
+  },
+  'mouseenter .cover-1': function(event){
+      event.preventDefault();
+      $(event.target).siblings(".cover-0").css({"opacity": "0.5", "transform": "rotateX(20deg)", "z-index": "10", "margin-top": "25px"});
+      $(event.target).siblings(".cover-2").css({"margin-top": "22px", "opacity": "1"});
+      $(event.target).siblings(".cover-3").css({"margin-top": "14px", "opacity": "0.6"});
+  },
+  'mouseleave .cover-1': function(event){
+      event.preventDefault();
+      $(event.target).siblings(".cover-0").css({"opacity": "0", "transform": "", "z-index": "2", "margin-top": "20px"});
+      $(event.target).siblings('.cover-2').css({"margin-top": "20px", "opacity": ""});
+      $(event.target).siblings('.cover-3').css({"margin-top": "20px", "opacity": ""});
   },
   'click .cancel-new-album': function(event){
       event.preventDefault();

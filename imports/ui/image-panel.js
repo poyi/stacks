@@ -8,31 +8,23 @@ Template.imagePanel.onCreated(function() {
   Session.set('selectedImage', false);
   Template.instance().subscribe( 'albums' );
   var albumId = FlowRouter.getParam("albumId");
-  var imageId = FlowRouter.getParam("imageId");
   Session.set('albumId', albumId);
-  Meteor.call("getImage", imageId, function(error, r) {
-    if (!error) {
-      Session.set('selectedImage', r);
-      // Set the tag input for image edit
-      if (r.tags) {
-        var tags = r.tags.toString();
-        $('#image-tags').importTags(tags);
-      }
-    } else {
-      console.log(error);
-    }
-  });
 });
 
 Template.imagePanel.rendered = function() {
-  $('#image-tags').tagsInput({
-    'defaultText':'Type here to add a tag'
+  var imageId = FlowRouter.getParam("imageId");
+  Meteor.call("getImage", imageId, function(error, r) {
+    if (!error) {
+      Session.set('selectedImage', r);
+    } else {
+      console.log(error);
+    }
   });
   // Fade in image once loaded
   loadDetailImage = function(obj) {
     $('#preview-loader').hide();
     $(obj).fadeIn('slow');
-  }
+  };
 }
 
 Template.imagePanel.helpers({
@@ -41,7 +33,10 @@ Template.imagePanel.helpers({
     return album;
   },
   image: function () {
-    return Session.get('selectedImage');
+    var image = Session.get('selectedImage');
+    if (image) {
+      return image;
+    }
   },
   tags: function () {
     var image = Session.get('selectedImage');
@@ -137,8 +132,19 @@ Template.imagePanel.events({
   },
   'click .edit-tag-link': function (e){
     e.preventDefault();
+    // #TODO: There is no way to destroy tagsInput when initialized so every click duplicates the input
     $('.tags-group').hide();
     $('.edit-tags-group').fadeIn();
+    $('#image-tags').tagsInput({
+      'height':'100px',
+      'width':'300px',
+      'defaultText':'Type here to add a tag'
+    });
+    var image = Session.get('selectedImage');
+    if (image.tags) {
+      var tags = image.tags.toString();
+      $('#image-tags').importTags(tags);
+    }
   },
   'click .share-image-link, #share-image-modal': function (e){
     e.preventDefault();
@@ -184,46 +190,22 @@ Template.imagePanel.events({
   },
   'click .update-tags-link': function (e){
     e.preventDefault();
-    $('.tags-group').fadeIn();
     var id = Session.get('selectedImage').public_id;
     var tags = $( "#image-tags_tagsinput .tag span:first-child" ).map(function() {
-      var test = $(this);
       return $(this).text().trim();
     }).get().join();
-    $('.edit-tags-group').hide();
     Meteor.call("updateImageTags", id, tags, function(error, r) {
       if (!error) {
-        Session.set('selectedImage', r);
+        location.reload();
       } else {
         console.log(error);
       }
     });
   },
-  "click .image-tags li": function(e) {
-    // On click, performs a tag search of the selected tag
+  "click image-tags li": function(e) {
+    // #TODO: On click, performs a tag search of the selected tag back on the library
     var tag = $(e.target).text();
-    Session.set('photoStream', undefined);
-    Session.set('showNoResults', false);
     Session.set('selectedTag', tag);
-    Meteor.call("getImagebyTag", tag, function(error, r) {
-      if (!error) {
-        // Check if returned result is none, if so set showNoResults to be true
-        var returnedArray = r.resources.length;
-        if (returnedArray == 0) {
-          Session.set('showNoResults', true);
-        } else {
-          Session.set('showNoResults', false);
-          Session.set('photoStream', r.resources);
-        }
-      } else {
-        Session.set('showNoResults', true);
-        console.log(error);
-      }
-    });
-    $('.imagePanel').hide();
-    $('.main-panel, #library-panel-nav').fadeIn();
-    // Remove search value if clicked on filter
-    $('input.tag-search').val(tag);
     e.preventDefault();
     e.stopPropagation();
   }

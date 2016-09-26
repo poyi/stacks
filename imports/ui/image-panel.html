@@ -89,7 +89,7 @@
             {{/if}}
           </div>
           <div class="edit-tags-group">
-            <input name="tags" id="image-tags" />
+            <input name="tags" id="image-tags" value=""/>
             <button class="button primary update-tags-link"><i class="fa fa-floppy-o" aria-hidden="true"></i>Apply Tags</button>
           </div>
         </div>
@@ -97,23 +97,5 @@
     {{else}}
       <div id="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
     {{/if}}
-  </div>
-</template>
-
-<template name="updatePhotoForm">
-  <div class="upload-modal">
-    <div class="image-preview">
-      <img src="{{c.url public_id crop="scale"}}">
-    </div>
-    {{#autoForm collection="Photos" doc=photo id="updatePhotoForm" class="photo-form" type="update"}}
-    <h1>Edit Photo</h1>
-      <fieldset>
-        {{> afQuickField name='title'}}
-        {{> afQuickField name='tags'}}
-      </fieldset>
-      <button type="submit" class="btn btn-primary">UPDATE</button>
-      {{#quickRemoveButton collection="Photos" onSuccess=deletePhoto _id=photo._id class="remove-photo"}}REMOVE PHOTO{{/quickRemoveButton}}
-    {{/autoForm}}
-    <div href="#" class="close"></div>
   </div>
 </template>

@@ -65,6 +65,10 @@ Meteor.startup(() => {
       Albums.insert({owner: owner, name: name, collaborators: collaborators, photos: []});
       return true;
     },
+    deleteAlbum: function (albumId) {
+      Albums.remove({_id:albumId});
+      return true;
+    },
     updateAlbumName: function (albumId, newName) {
       Albums.update({_id:albumId}, { $set:{"name":newName}});
       return true;
