@@ -12,6 +12,7 @@ import '../imports/ui/album.js';
 import '../imports/ui/moderate-panel.js';
 import '../imports/ui/password-reset.js';
 import '../imports/api/albums/albums.js';
+import '../imports/ui/notification.js';
 
 $.cloudinary.config
     cloud_name:"travana-inc"

@@ -16,6 +16,9 @@ Template.register.events({
         }, function(err) {
           if (err) {
             console.log(err);
+            Session.set('notificationMessage', err.reason);
+            Session.set('successNotification', false);
+            Session.set('errorNotification', true);
           } else {
             console.log("Signed up!");
             FlowRouter.go('/library');

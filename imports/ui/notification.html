@@ -1,0 +1,12 @@
+<template name="notification">
+  {{#if successNotification}}
+    <div class="notification">
+      {{message}}
+    </div>
+  {{/if}}
+  {{#if errorNotification}}
+    <div class="notification error">
+      {{message}}
+    </div>
+  {{/if}}
+</template>

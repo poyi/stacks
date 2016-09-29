@@ -133,20 +133,3 @@ h1 {
 .nav-links li a {
 	text-decoration: none;
 }
-
-.notification-banner {
-	position: fixed;
-	height: 58px;
-	width: 100%;
-	bottom: 0;
-	background: #242424;
-	z-index: 9999;
-	color: white;
-	padding: 20px 30px;
-	text-align: center;
-	display: none;
-}
-
-.error {
-	background: #FF8673;
-}

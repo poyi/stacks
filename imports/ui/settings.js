@@ -40,6 +40,12 @@ Template.settings.helpers({
       return user.emails[0].address;
     }
   },
+  userRole: function(){
+    var user = Meteor.user();
+    if (user) {
+      return user.roles;
+    }
+  },
   firstName: function() {
     var user = Meteor.user();
     if(user) {
@@ -80,9 +86,13 @@ Template.settings.events({
     var lastName = $('#lastName').val();
     Meteor.call("updateUser", userId, firstName, lastName, function(error, r) {
       if (!error) {
-        console.log('user updated')
+        Session.set('notificationMessage', 'Updated profile!');
+        Session.set('errorNotification', false);
+        Session.set('successNotification', true);
       } else {
-        console.log(error);
+        Session.set('notificationMessage', 'Something went wrong, please double check your entry');
+        Session.set('successNotification', false);
+        Session.set('errorNotification', true);
       }
     });
     return false;
@@ -97,16 +107,19 @@ Template.settings.events({
     if (oldPassword !== '' && newPassword !== '') {
       Accounts.changePassword(oldPassword, newPassword, function(err) {
         if (err) {
-          Session.set('bannerMessage', 'Something went wrong, please double check your entry');
-          console.log('Please double check your old password');
-          $('.notification-banner').fadeIn();
+          Session.set('notificationMessage', 'Something went wrong, please double check your entry');
+          Session.set('successNotification', false);
+          Session.set('errorNotification', true);
         } else {
-          console.log('Your password has been changed.');
+          Session.set('notificationMessage', 'Your password has been updated!');
+          Session.set('errorNotification', false);
+          Session.set('successNotification', true);
         }
       });
     } else {
-      Session.set('bannerMessage', 'Please fill in all the fields');
-      $('.notification-banner').fadeIn();
+      Session.set('notificationMessage', 'Please fill in all the fields');
+      Session.set('successNotification', false);
+      Session.set('errorNotification', true);
     }
     return false;
   }

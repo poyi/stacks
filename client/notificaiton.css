@@ -1,0 +1,15 @@
+.notification {
+	position: fixed;
+	height: 58px;
+	width: 100%;
+	bottom: 0;
+	background: #5DD73C;
+	z-index: 9999;
+	color: white;
+	padding: 20px 30px;
+	text-align: center;
+}
+
+.notification.error {
+	background: #F0634D;
+}

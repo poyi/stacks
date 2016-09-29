@@ -6,7 +6,6 @@ import './password-reset.html';
 Template.passwordReset.onCreated(function() {
   var token = FlowRouter.getParam("token");
   if (token) {
-    console.log('reset token is' + token);
     Session.set('resetPassword', token);
   }
 });
@@ -23,12 +22,17 @@ Template.passwordReset.events({
       Accounts.forgotPassword({email: email}, function(err) {
         if (err) {
           if (err.message === 'User not found [403]') {
-            Alert('This email does not exist.');
+            Session.set('notificationMessage', 'This email does not exist.');
+            Session.set('successNotification', false);
+            Session.set('errorNotification', true);
           } else {
-            Alert('We are sorry but something went wrong. Please notify the stacks administrator');
+            Session.set('notificationMessage', 'We are sorry but something went wrong. Please notify the Stacks administrator');
+            Session.set('successNotification', false);
+            Session.set('errorNotification', true);
           }
         } else {
-          Alert('Email Sent. Check your mailbox.');
+          Session.set('notificationMessage', 'Email Sent! Check your mailbox.');
+          Session.set('successNotification', true);
         }
       });
 
@@ -57,9 +61,12 @@ Template.passwordReset.events({
     if (password !== '' && password == passwordConfirm) {
       Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {
         if (err) {
-          console.log('Something went wrong, please double check your entry');
+          Session.set('notificationMessage', 'Something went wrong, please double check your entry');
+          Session.set('successNotification', false);
+          Session.set('errorNotification', true);
         } else {
-          console.log('Your password has been changed. Welcome back!');
+          Session.set('notificationMessage', 'Your password has been changed. Welcome back!');
+          Session.set('successNotification', true);
           Session.set('resetPassword', null);
           FlowRouter.go('/library');
         }

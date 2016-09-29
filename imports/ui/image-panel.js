@@ -104,10 +104,13 @@ Template.imagePanel.events({
     var file_format = Session.get('selectedImage').format;
     Meteor.call("addToAlbum", albumId, imageId, file_format, function(error, r) {
       if (!error) {
-        // #TODO: Add success message
-        console.log('Image is in album');
+        Session.set('notificationMessage', 'Added image to album!');
+        Session.set('successNotification', true);
       } else {
         console.log(error);
+        Session.set('notificationMessage', 'Ops, something went wrong. Please try again.');
+        Session.set('successNotification', false);
+        Session.set('errorNotification', true);
       }
     });
     $('.add-to-album-link').show();

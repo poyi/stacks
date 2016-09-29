@@ -25,6 +25,8 @@ Template.library.onCreated(function() {
 });
 
 Template.library.rendered = function() {
+  Session.set('successNotification', false);
+  Session.set('errorNotification', false);
   // Fade in images when fully loaded
   init = function(obj) {
     $(obj).fadeIn('slow');
