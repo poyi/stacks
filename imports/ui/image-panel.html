@@ -59,10 +59,10 @@
         {{/if}}
       </ul>
     </div>
-    {{#if image}}
+      {{#if image}}
       <div class="preview-panel">
         <!-- #TODO: image not fading in  -->
-        <img class="image-preview" onload="loadDetailImage(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
+          <img class="image-preview" onload="loadDetailImage(this)" src="http://res.cloudinary.com/travana-inc/image/upload/c_fill,h_600/{{image.public_id}}.{{image.format}}"/>
       </div>
       <div class="info-panel">
         <div class="image-meta">
@@ -94,8 +94,7 @@
           </div>
         </div>
       </div>
-    {{else}}
+      {{/if}}
       <div id="preview-loader"><div class="loading-icon"><span class="loader"><span class="loader-inner"></span></span></div></div>
-    {{/if}}
   </div>
 </template>

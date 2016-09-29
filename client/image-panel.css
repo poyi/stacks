@@ -127,3 +127,7 @@
 .close-album-list-link {
   display: none;
 }
+
+#preview-loader {
+  position: absolute;
+}
