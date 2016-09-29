@@ -11,14 +11,20 @@
       <li style="margin-top: -12px;">
         <a href="/my-albums" class="button passive"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to My Albums</a>
       </li>
+      {{#if albumOwner}}
+        <li>
+          <form id="album-name-form">
+            <input id="edit-album-name" type=text name="album-name" value={{name}} />
+          </form>
+        </li>
+        <li class="menu-actions">
+          <button class="button delete delete-album"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Albums</button>
+        </li>
+      {{else}}
       <li>
-        <form id="album-name-form">
-          <input id="edit-album-name" type=text name="album-name" value={{name}} />
-        </form>
+        {{name}}
       </li>
-      <li class="menu-actions">
-        <button class="button delete delete-album"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Albums</button>
-      </li>
+      {{/if}}
       <!-- #TODO: Add share album / collaborators feature -->
     </ul>
   </div>

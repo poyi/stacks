@@ -37,6 +37,19 @@ Template.album.helpers({
       Session.set('noAlbumPhoto', true);
     }
   },
+  albumOwner: function() {
+    var albumId = Session.get("albumId");
+    var album = Albums.findOne({_id: albumId});
+    if(album) {
+      var owner = album.owner;
+      var currentUser = Meteor.userId();
+      if (owner == currentUser) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   name: function() {
     var albumId = Session.get("albumId");
     var album = Albums.findOne({_id: albumId});
