@@ -9,7 +9,7 @@ cloudinary.config({
 
 Meteor.startup(() => {
 
-  process.env.MAIL_URL = Meteor.settings.public.MAIL_URL;
+  process.env.MAIL_URL = Meteor.settings.MAIL_URL;
 
   Accounts.urls.resetPassword = function(token) {
     return Meteor.absoluteUrl('reset-password/' + token);
