@@ -60,6 +60,10 @@ Template.library.helpers({
 Template.library.events({
   'click .logout': function(event){
         event.preventDefault();
+        location.reload();
+  },
+  'click .logo': function(event){
+        event.preventDefault();
         Meteor.logout(function (success, error) {
             FlowRouter.go('/');
         });
